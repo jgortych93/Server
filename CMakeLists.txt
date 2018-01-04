@@ -21,6 +21,9 @@ set ( SOURCES
     src/main.cpp
     src/server.hpp
     src/server.cpp
+    src/client.cpp
+    src/client.hpp
+    src/ClientObject.hpp
 )
 
 ##############################################

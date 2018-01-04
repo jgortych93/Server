@@ -6,7 +6,6 @@
 
 using namespace std;
 
-#define MAX_CLIENTS 100
 #define SOCKET_INIT_FAILED "Socket initalization failed"
 #define BIND_FAILED "Error on binding"
 #define LISTEN_ERROR "Error on listen call"
@@ -64,9 +63,9 @@ void Server::runServer()
 {
     listenOnSocket();
 
-    uint numberOfThreads = 0;
-
     uint clientAddressLength = sizeof(clientAddress);
+
+    numberOfThreads = 0;
 
     while(numberOfThreads < QUEUE_SIZE)
     {
@@ -96,6 +95,11 @@ void* Server::action(void* clientDesc)
     bzero(messageBuffer, BUFFER_SIZE+1);
 
     read(*(int *)clientDesc, messageBuffer, BUFFER_SIZE);
+
+    ClientObject client;
+    client.setUserId(numberOfThreads);
+
+
 
 
 }

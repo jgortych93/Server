@@ -5,6 +5,7 @@
 #include <sys/socket.h>
 #include <netinet/in.h>
 #include <pthread.h>
+#include "ClientObject.hpp"
 
 
 #define QUEUE_SIZE 5
@@ -16,6 +17,8 @@ class Server
     struct sockaddr_in serverAddress;
     struct sockaddr_in clientAddress;
     pthread_t clientThreads[QUEUE_SIZE];
+    static uint numberOfThreads;
+
 
     void initializeNewSocket();
     void fillServerAddressStruct();
