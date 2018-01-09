@@ -11,6 +11,7 @@ using namespace std;
 #define LISTEN_ERROR "Error on listen call"
 #define ACCEPT_ERROR "Cannot accept connection"
 #define BUFFER_SIZE 300
+#define NAME_BUFFER_SIZE 3
 
 Server::Server(const int& portNumber)
 {
@@ -93,14 +94,20 @@ void* Server::action(void* clientDesc)
 {
     char messageBuffer[BUFFER_SIZE];
     bzero(messageBuffer, BUFFER_SIZE+1);
+    char nameBuffer[NAME_BUFFER_SIZE];
+    bzero(nameBuffer, NAME_BUFFER_SIZE+1);
 
-    read(*(int *)clientDesc, messageBuffer, BUFFER_SIZE);
+    int connectionDescriptor = *(int *)clientDesc;
+
+    read(connectionDescriptor, messageBuffer, BUFFER_SIZE);
 
     ClientObject client;
     client.setUserId(numberOfThreads);
+    client.setConnectionDesc(connectionDescriptor);
 
-
-
+    // default name is thread number
+    snprintf(nameBuffer, NAME_BUFFER_SIZE, "%d", numberOfThreads);
+    client.setName(nameBuffer);
 
 }
 
