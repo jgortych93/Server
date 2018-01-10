@@ -10,6 +10,7 @@ using namespace std;
 #define BIND_FAILED "Error on binding"
 #define LISTEN_ERROR "Error on listen call"
 #define ACCEPT_ERROR "Cannot accept connection"
+#define SENDING_ERROR "Sending to client has failed"
 #define BUFFER_SIZE 300
 #define NAME_BUFFER_SIZE 3
 
@@ -99,8 +100,6 @@ void* Server::action(void* clientDesc)
 
     int connectionDescriptor = *(int *)clientDesc;
 
-    read(connectionDescriptor, messageBuffer, BUFFER_SIZE);
-
     ClientObject client;
     client.setUserId(numberOfThreads);
     client.setConnectionDesc(connectionDescriptor);
@@ -109,5 +108,24 @@ void* Server::action(void* clientDesc)
     snprintf(nameBuffer, NAME_BUFFER_SIZE, "%d", numberOfThreads);
     client.setName(nameBuffer);
 
+    try
+    {
+        client.sendMessage("Test message\n");
+    }
+    catch(exception& e){
+        cout<<e.what();
+    }
+
+    read(connectionDescriptor, messageBuffer, BUFFER_SIZE);
+
+
+}
+
+void ClientObject::sendMessage(const char *message) const
+{
+    const int sendingStatus =  write(this->getSocketDescriptor(), message, size_t(message));
+
+    if (sendingStatus < 0)
+        throw runtime_error(SENDING_ERROR);
 }
 

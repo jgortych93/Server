@@ -21,13 +21,29 @@ class Server
 
 
     void initializeNewSocket();
+    /**
+     * @brief fillServerAddressStruct
+     *
+     * Fills serverAddress struct with all data needed for proper comunication
+     */
     void fillServerAddressStruct();
     void bindSocket();
     void listenOnSocket();
+    /**
+     * @brief action
+     * @param clientDesc Client socket file descriptor
+     * @return
+     *
+     * Standard action that new client thread executes. It creates new ClientObject instance and sends initial message
+     */
     static void* action(void* clientDesc);
 public:
     Server(const int& portNumber);
-
+    /**
+     * @brief runServer
+     *
+     * Method listens for new connections, accepts them and creates new thread for each new connection
+     */
     void runServer();
 
 
