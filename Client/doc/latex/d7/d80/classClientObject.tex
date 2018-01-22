@@ -1,0 +1,75 @@
+\hypertarget{classClientObject}{}\section{Client\+Object Class Reference}
+\label{classClientObject}\index{Client\+Object@{Client\+Object}}
+
+
+The \hyperlink{classClientObject}{Client\+Object} class.  
+
+
+
+
+{\ttfamily \#include $<$Client\+Object.\+hpp$>$}
+
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classClientObject_ab91f5a41ec123f2d312c7162eda4dff4}\label{classClientObject_ab91f5a41ec123f2d312c7162eda4dff4}} 
+void \hyperlink{classClientObject_ab91f5a41ec123f2d312c7162eda4dff4}{set\+Name} (const char $\ast$\hyperlink{classClientObject_ae5cc4e5bbbb99cdbe152273daa15633a}{name})
+\begin{DoxyCompactList}\small\item\em Client name. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classClientObject_a91713ffa31ed38978f10139dc2ddb81f}\label{classClientObject_a91713ffa31ed38978f10139dc2ddb81f}} 
+void {\bfseries set\+User\+Id} (const uint \&id)
+\item 
+\mbox{\Hypertarget{classClientObject_a6cc23f4c8d93b2945399a7c5c0af7501}\label{classClientObject_a6cc23f4c8d93b2945399a7c5c0af7501}} 
+void {\bfseries set\+Connection\+Desc} (const int \&conn\+Desc)
+\item 
+void \hyperlink{classClientObject_a4704430f61bd85efd980c6ea083d5374}{send\+Message} (const char $\ast$message) const
+\begin{DoxyCompactList}\small\item\em send\+Message \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classClientObject_a32f1b03ba465cda2796f48a46ef356df}\label{classClientObject_a32f1b03ba465cda2796f48a46ef356df}} 
+int {\bfseries get\+Socket\+Descriptor} () const
+\item 
+\mbox{\Hypertarget{classClientObject_a49c720a1b38e12ebad46f2e9c9cde1b1}\label{classClientObject_a49c720a1b38e12ebad46f2e9c9cde1b1}} 
+void {\bfseries set\+Client\+Address} (const struct sockaddr\+\_\+in \&address)
+\end{DoxyCompactItemize}
+\subsection*{Private Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classClientObject_a9f699539d7adac42a71e4bf6501c0c53}\label{classClientObject_a9f699539d7adac42a71e4bf6501c0c53}} 
+struct sockaddr\+\_\+in {\bfseries client\+Address}
+\item 
+\mbox{\Hypertarget{classClientObject_a6592e5413c789857a68b836c7b27c7b1}\label{classClientObject_a6592e5413c789857a68b836c7b27c7b1}} 
+int \hyperlink{classClientObject_a6592e5413c789857a68b836c7b27c7b1}{connection\+Desc}
+\begin{DoxyCompactList}\small\item\em Client remote address. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classClientObject_ab4b229b46fe32b699598051074a4f71b}\label{classClientObject_ab4b229b46fe32b699598051074a4f71b}} 
+uint \hyperlink{classClientObject_ab4b229b46fe32b699598051074a4f71b}{user\+Id}
+\begin{DoxyCompactList}\small\item\em Connection file descriptor. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classClientObject_ae5cc4e5bbbb99cdbe152273daa15633a}\label{classClientObject_ae5cc4e5bbbb99cdbe152273daa15633a}} 
+char \hyperlink{classClientObject_ae5cc4e5bbbb99cdbe152273daa15633a}{name} \mbox{[}32\mbox{]}
+\begin{DoxyCompactList}\small\item\em Client unique identifier. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+The \hyperlink{classClientObject}{Client\+Object} class. 
+
+Representation of single chat client 
+
+\subsection{Member Function Documentation}
+\mbox{\Hypertarget{classClientObject_a4704430f61bd85efd980c6ea083d5374}\label{classClientObject_a4704430f61bd85efd980c6ea083d5374}} 
+\index{Client\+Object@{Client\+Object}!send\+Message@{send\+Message}}
+\index{send\+Message@{send\+Message}!Client\+Object@{Client\+Object}}
+\subsubsection{\texorpdfstring{send\+Message()}{sendMessage()}}
+{\footnotesize\ttfamily void Client\+Object\+::send\+Message (\begin{DoxyParamCaption}\item[{const char $\ast$}]{message }\end{DoxyParamCaption}) const}
+
+
+
+send\+Message 
+
+
+\begin{DoxyParams}{Parameters}
+{\em message} & A message to sent\\
+\hline
+\end{DoxyParams}
+Function sends passed message to the client and throws exception in case of sending failure 
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+/media/jakub/2\+A\+C2\+C\+C\+F9\+C2\+C\+C\+C\+A71/\+Programowanie/\+Projects/\+Server\+\_\+\+Project/src/Client\+Object.\+hpp\item 
+/media/jakub/2\+A\+C2\+C\+C\+F9\+C2\+C\+C\+C\+A71/\+Programowanie/\+Projects/\+Server\+\_\+\+Project/src/Client\+Object.\+cpp\end{DoxyCompactItemize}
