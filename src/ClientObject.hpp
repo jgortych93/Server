@@ -13,7 +13,6 @@ class ClientObject
     int connectionDesc;                 /// Connection file descriptor
     uint userId;                        /// Client unique identifier
     char name[32];                      /// Client name
-    int getSocketDescriptor() const {return this->connectionDesc;}
 public:
     void setName(const char* name) {this->name[0] = *name;}
     void setUserId(const uint& id) {this->userId = id;}
@@ -25,6 +24,8 @@ public:
      * Function sends passed message to the client and throws exception in case of sending failure
      */
     void sendMessage(const char* message) const;
+    int getSocketDescriptor() const {return this->connectionDesc;}
+    void setClientAddress(const struct sockaddr_in& address){this->clientAddress = address;}
 };
 
 #endif //CLIENTOBJECT_H

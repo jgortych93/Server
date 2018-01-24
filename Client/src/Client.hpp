@@ -9,9 +9,12 @@
 
 class Client
 {
-    int fileDescriptor;
-    int port;
-    struct sockaddr_in address;
+    const char* ipAddress;
+    int serverFileDescriptor;
+    int clientFileDescriptor;
+    int serverPort;
+    struct sockaddr_in serverAddress;
+
     void initializeNewSocket();
     /**
      * @brief fillServerAddressStruct
@@ -19,14 +22,25 @@ class Client
      * Fills serverAddress struct with all data needed for proper comunication
      */
     void fillServerAddressStruct();
-    void bindSocket();
-    void listenOnSocket();
-    void startClient();
+    /**
+     * @brief resolveAddress
+     *
+     * Assigns ip address as server's address in the proper way.
+     */
+    void resolveAddress();
+
+    void readMessage(char* buffer) const;
+    void sendMessage(const char* message) const;
+
+    void connectToServer();
+
+    void communicateWithServer();
 
 public:
-        Client(const int& port);
+        Client(const char* ipAddress, const int& serverPort);
 
 
-}
+
+};
 
 #endif //CLIENT_H

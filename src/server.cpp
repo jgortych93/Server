@@ -10,7 +10,6 @@ using namespace std;
 #define BIND_FAILED "Error on binding"
 #define LISTEN_ERROR "Error on listen call"
 #define ACCEPT_ERROR "Cannot accept connection"
-#define SENDING_ERROR "Sending to client has failed"
 #define BUFFER_SIZE 300
 #define NAME_BUFFER_SIZE 3
 
@@ -25,9 +24,8 @@ Server::Server(const int& portNumber)
         cout<<e.what();
     }
 
-    fillServerAddressStruct();
-
     bzero((char *) &serverAddress, sizeof(serverAddress));
+    fillServerAddressStruct();
 
 }
 
@@ -65,7 +63,8 @@ void Server::runServer()
 {
     listenOnSocket();
 
-    uint clientAddressLength = sizeof(clientAddress);
+    struct sockaddr_in tmpAddress;
+    uint clientAddressLength = sizeof(tmpAddress);
 
     numberOfThreads = 0;
 
@@ -73,59 +72,51 @@ void Server::runServer()
     {
         cout<<"listening";
 
-        const int clientDescriptor = accept(socketDescriptor, (struct sockaddr*)&clientAddress, &clientAddressLength);
+        const int clientDescriptor = accept(socketDescriptor, (struct sockaddr*)&tmpAddress, &clientAddressLength);
 
         if (clientDescriptor == 0)
         {
-              throw runtime_error(ACCEPT_ERROR);
+              cout<<ACCEPT_ERROR<<endl;
+              continue;
         }
 
         cout<<"New connection"<<endl;
 
-        pthread_create(&clientThreads[numberOfThreads], NULL, action, (void*)(intptr_t)clientDescriptor);
-        pthread_join(clientThreads[numberOfThreads], NULL);
-
         ++numberOfThreads;
 
+        ClientObject newClientObject;
+        newClientObject.setUserId(numberOfThreads);
+        newClientObject.setConnectionDesc(clientDescriptor);
+        newClientObject.setClientAddress(tmpAddress);
+
+        pthread_create(&clientThreads[numberOfThreads], NULL, action, (void*)&newClientObject);
+        pthread_join(clientThreads[numberOfThreads], NULL);
     }
 
 }
 
-void* Server::action(void* clientDesc)
+void* Server::action(void* client)
 {
     char messageBuffer[BUFFER_SIZE];
     bzero(messageBuffer, BUFFER_SIZE+1);
     char nameBuffer[NAME_BUFFER_SIZE];
     bzero(nameBuffer, NAME_BUFFER_SIZE+1);
 
-    int connectionDescriptor = *(int *)clientDesc;
-
-    ClientObject client;
-    client.setUserId(numberOfThreads);
-    client.setConnectionDesc(connectionDescriptor);
+    ClientObject clientObject = *(ClientObject *)client;
 
     // default name is thread number
     snprintf(nameBuffer, NAME_BUFFER_SIZE, "%d", numberOfThreads);
-    client.setName(nameBuffer);
+    clientObject.setName(nameBuffer);
 
     try
     {
-        client.sendMessage("Test message\n");
+        clientObject.sendMessage("Test message\n");
     }
     catch(exception& e){
         cout<<e.what();
     }
 
-    read(connectionDescriptor, messageBuffer, BUFFER_SIZE);
+    read(clientObject.getSocketDescriptor(), messageBuffer, BUFFER_SIZE);
 
-
-}
-
-void ClientObject::sendMessage(const char *message) const
-{
-    const int sendingStatus =  write(this->getSocketDescriptor(), message, size_t(message));
-
-    if (sendingStatus < 0)
-        throw runtime_error(SENDING_ERROR);
 }
 

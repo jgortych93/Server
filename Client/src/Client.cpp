@@ -1,17 +1,24 @@
 #include "Client.hpp"
-#include <exception>
+#include <stdexcept>
+#include <iostream>
 
 #define SOCKET_INIT_FAILED "Socket initalization failed"
 #define BIND_FAILED "Error on binding"
 #define LISTEN_ERROR "Error on listen call"
 #define ACCEPT_ERROR "Cannot accept connection"
 #define SENDING_ERROR "Sending to client has failed"
+#define CONNECTION_ERROR "Cannot connect to socket"
+#define ADDRESS_ERROR "Wrong ip address"
+#define CONNECT_ERROR "CONNECT ERROR"
 #define BUFFER_SIZE 300
 #define QUEUE_SIZE 5
 
-Client::Client(const int& port)
+using namespace std;
+
+Client::Client(const char* ipAddress, const int& port)
 {
-        this->port = port;
+        this->serverPort = port;
+        this->ipAddress = ipAddress;
 
         initializeNewSocket();
 
@@ -21,8 +28,8 @@ Client::Client(const int& port)
 
 void Client::initializeNewSocket()
 {
-    this->fileDescriptor = socket(AF_INET, SOCK_STREAM, 0);
-    if (socketDescriptor = 0)
+    this->serverFileDescriptor = socket(AF_INET, SOCK_STREAM, 0);
+    if (serverFileDescriptor = 0)
     {
         throw runtime_error(SOCKET_INIT_FAILED);
     }
@@ -30,41 +37,28 @@ void Client::initializeNewSocket()
 
 void Client::fillServerAddressStruct()
 {
-    this->address.sin_family = AF_INET;
-    this->address.sin_port = htons(this->port);
-    this->address.sin_addr.s_addr = INADDR_ANY;
+    this->serverAddress.sin_family = AF_INET;
+    this->serverAddress.sin_port = htons(this->serverPort);
+    this->resolveAddress();
 }
 
-void Client::bindSocket()
+void Client::resolveAddress()
 {
-    if (bind(this->fileDescriptor, (struct sockaddr*)&(this->address), sizeof(address)) < 0)
-    {
-            throw runtime_error(BIND_FAILED);
-    }
+
+    if (!inet_aton(this->ipAddress, (&this->serverAddress.sin_addr)))
+        throw runtime_error(ADDRESS_ERROR);
 }
 
-void Client::listenOnSocket()
+
+void Client::connectToServer()
 {
-    if (listen(this->fileDescriptor, QUEUE_SIZE) == -1)
-        throw runtime_error(LISTEN_ERROR);
+    if (connect(this->serverFileDescriptor, (struct sockaddr*)&(this->serverAddress), sizeof(serverAddress)) == -1)
+        throw runtime_error(CONNECT_ERROR);
+
+    this->communicateWithServer();
 }
 
-void Client::startClient()
+void Client::communicateWithServer()
 {
-    bindSocket();
-    listenOnSocket();
-
-    while(1)
-    {
-        cout<<"listening";
-
-        const int serverDescriptor = accept(this->fileDescriptor, (struct sockaddr*)&clientAddress, &clientAddressLength);
-
-        if (serverDescriptor == 0)
-        {
-              throw runtime_error(ACCEPT_ERROR);
-        }
-
-        cout<<"New connection"<<endl;
-    }
+    //readMessage();
 }
