@@ -18,13 +18,7 @@ INCLUDE_DIRECTORIES( ${CMAKE_CURRENT_BINARY_DIR}
     ${CMAKE_CURRENT_SOURCE_DIR}
 )
 
-set ( SOURCES
-    src/main.cpp
-    src/server.hpp
-    src/server.cpp
-    src/ClientObject.cpp
-    src/ClientObject.hpp
-)
+file(GLOB SOURCES ${CMAKE_CURRENT_SOURCE_DIR}/*.cpp)
 
 ##############################################
 ################# COMPILATION ################
@@ -36,5 +30,5 @@ set ( SOURCES
 add_executable( ${PROJECT_NAME} ${SOURCES})
 
 # build it (link libraries)
-target_link_libraries( ${PROJECT_NAME} )
+target_link_libraries( ${PROJECT_NAME} pthread)
 

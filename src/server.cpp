@@ -3,6 +3,7 @@
 #include <exception>
 #include <string.h>
 #include <unistd.h>
+#include <errno.h>
 
 using namespace std;
 
@@ -12,6 +13,9 @@ using namespace std;
 #define ACCEPT_ERROR "Cannot accept connection"
 #define BUFFER_SIZE 300
 #define NAME_BUFFER_SIZE 3
+
+uint Server::numberOfThreads = 0;
+
 
 Server::Server(const int& portNumber)
 {
@@ -49,7 +53,7 @@ void Server::bindSocket()
 {
     if (bind(socketDescriptor, (struct sockaddr*)&serverAddress, sizeof(serverAddress)) < 0)
     {
-            throw runtime_error(BIND_FAILED);
+            throw runtime_error(strerror(errno));
     }
 }
 
@@ -59,16 +63,18 @@ void Server::listenOnSocket()
         throw runtime_error(LISTEN_ERROR);
 }
 
+
 void Server::runServer()
 {
+    bindSocket();
     listenOnSocket();
 
     struct sockaddr_in tmpAddress;
     uint clientAddressLength = sizeof(tmpAddress);
 
-    numberOfThreads = 0;
 
-    while(numberOfThreads < QUEUE_SIZE)
+
+    while(Server::numberOfThreads < QUEUE_SIZE)
     {
         cout<<"listening";
 
@@ -82,15 +88,15 @@ void Server::runServer()
 
         cout<<"New connection"<<endl;
 
-        ++numberOfThreads;
+        ++Server::numberOfThreads;
 
         ClientObject newClientObject;
-        newClientObject.setUserId(numberOfThreads);
+        newClientObject.setUserId(Server::numberOfThreads);
         newClientObject.setConnectionDesc(clientDescriptor);
         newClientObject.setClientAddress(tmpAddress);
 
-        pthread_create(&clientThreads[numberOfThreads], NULL, action, (void*)&newClientObject);
-        pthread_join(clientThreads[numberOfThreads], NULL);
+        pthread_create(&clientThreads[Server::numberOfThreads], NULL, action, (void*)&newClientObject);
+        pthread_join(clientThreads[Server::numberOfThreads], NULL);
     }
 
 }
@@ -105,7 +111,7 @@ void* Server::action(void* client)
     ClientObject clientObject = *(ClientObject *)client;
 
     // default name is thread number
-    snprintf(nameBuffer, NAME_BUFFER_SIZE, "%d", numberOfThreads);
+    snprintf(nameBuffer, NAME_BUFFER_SIZE, "%d", Server::numberOfThreads);
     clientObject.setName(nameBuffer);
 
     try
