@@ -4,6 +4,7 @@
 #include <string.h>
 #include <unistd.h>
 #include <errno.h>
+#include<QtCore/qdebug.h>
 
 using namespace std;
 
@@ -25,10 +26,10 @@ Server::Server(const int& portNumber)
         initializeNewSocket();
     }
     catch(exception& e){
-        cout<<e.what();
+        qDebug()<<e.what();
     }
 
-    bzero((char *) &serverAddress, sizeof(serverAddress));
+    bzero(reinterpret_cast<char *> (&serverAddress), sizeof(serverAddress));
     fillServerAddressStruct();
 
 }
@@ -36,7 +37,7 @@ Server::Server(const int& portNumber)
 void Server::initializeNewSocket()
 {
     this->socketDescriptor = socket(AF_INET, SOCK_STREAM, 0);
-    if (socketDescriptor = 0)
+    if (socketDescriptor == 0)
     {
         throw runtime_error(SOCKET_INIT_FAILED);
     }
@@ -45,13 +46,13 @@ void Server::initializeNewSocket()
 void Server::fillServerAddressStruct()
 {
     this->serverAddress.sin_family = AF_INET;
-    this->serverAddress.sin_port = htons(this->portNumber);
+    this->serverAddress.sin_port = htons(static_cast<uint16_t>(this->portNumber));
     this->serverAddress.sin_addr.s_addr = INADDR_ANY;
 }
 
 void Server::bindSocket()
 {
-    if (bind(socketDescriptor, (struct sockaddr*)&serverAddress, sizeof(serverAddress)) < 0)
+    if (bind(socketDescriptor, reinterpret_cast<struct sockaddr*>(&serverAddress), sizeof(serverAddress)) < 0)
     {
             throw runtime_error(strerror(errno));
     }
@@ -61,6 +62,7 @@ void Server::listenOnSocket()
 {
     if (listen(socketDescriptor, QUEUE_SIZE) == -1)
         throw runtime_error(LISTEN_ERROR);
+
 }
 
 
@@ -76,17 +78,17 @@ void Server::runServer()
 
     while(Server::numberOfThreads < QUEUE_SIZE)
     {
-        cout<<"listening";
+        qDebug()<<"listening";
 
-        const int clientDescriptor = accept(socketDescriptor, (struct sockaddr*)&tmpAddress, &clientAddressLength);
+        const int clientDescriptor = accept(socketDescriptor, reinterpret_cast<struct sockaddr*>(&tmpAddress), &clientAddressLength);
 
         if (clientDescriptor == 0)
         {
-              cout<<ACCEPT_ERROR<<endl;
+              qDebug()<<ACCEPT_ERROR<<endl;
               continue;
         }
 
-        cout<<"New connection"<<endl;
+        qDebug()<<"New connection"<<endl;
 
         ++Server::numberOfThreads;
 
@@ -95,7 +97,7 @@ void Server::runServer()
         newClientObject.setConnectionDesc(clientDescriptor);
         newClientObject.setClientAddress(tmpAddress);
 
-        pthread_create(&clientThreads[Server::numberOfThreads], NULL, action, (void*)&newClientObject);
+        pthread_create(&clientThreads[Server::numberOfThreads], NULL, action, static_cast<void*>(&newClientObject));
         pthread_join(clientThreads[Server::numberOfThreads], NULL);
     }
 
@@ -108,7 +110,7 @@ void* Server::action(void* client)
     char nameBuffer[NAME_BUFFER_SIZE];
     bzero(nameBuffer, NAME_BUFFER_SIZE+1);
 
-    ClientObject clientObject = *(ClientObject *)client;
+    ClientObject clientObject = *static_cast<ClientObject *>(client);
 
     // default name is thread number
     snprintf(nameBuffer, NAME_BUFFER_SIZE, "%d", Server::numberOfThreads);
@@ -119,7 +121,7 @@ void* Server::action(void* client)
         clientObject.sendMessage("Test message\n");
     }
     catch(exception& e){
-        cout<<e.what();
+        qDebug()<<e.what();
     }
 
     read(clientObject.getSocketDescriptor(), messageBuffer, BUFFER_SIZE);

@@ -12,22 +12,26 @@ set( VERSION_PATCH 1 )
 ##############################################
 ############### SOURCE SETTINGS ##############
 ##############################################
-
+find_package(Qt5Core REQUIRED)
+# Set used libraries
+set(QT_LIBRARIES
+    Qt5::Core)
 
 INCLUDE_DIRECTORIES( ${CMAKE_CURRENT_BINARY_DIR}
     ${CMAKE_CURRENT_SOURCE_DIR}
 )
 
-set ( SOURCES
-    src/main.cpp
-    src/Client.hpp
-    src/Client.cpp
-)
+file(GLOB SOURCES ${CMAKE_CURRENT_SOURCE_DIR}/*.cpp)
 
 ##############################################
 ################# COMPILATION ################
 ##############################################
 
 # Add target
-add_library( ${PROJECT_NAME} SHARED ${SOURCES})
+#add_library( ${PROJECT_NAME} SHARED ${SOURCES})
+
+add_executable( ${PROJECT_NAME} ${SOURCES})
+
+# build it (link libraries)
+target_link_libraries( ${PROJECT_NAME} ${QT_LIBRARIES} )
 

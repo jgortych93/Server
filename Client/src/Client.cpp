@@ -1,6 +1,8 @@
 #include "Client.hpp"
 #include <stdexcept>
 #include <iostream>
+#include <unistd.h>
+#include <QtCore/qdebug.h>
 
 #define SOCKET_INIT_FAILED "Socket initalization failed"
 #define BIND_FAILED "Error on binding"
@@ -29,7 +31,7 @@ Client::Client(const char* ipAddress, const int& port)
 void Client::initializeNewSocket()
 {
     this->serverFileDescriptor = socket(AF_INET, SOCK_STREAM, 0);
-    if (serverFileDescriptor = 0)
+    if (serverFileDescriptor == 0)
     {
         throw runtime_error(SOCKET_INIT_FAILED);
     }
@@ -38,7 +40,7 @@ void Client::initializeNewSocket()
 void Client::fillServerAddressStruct()
 {
     this->serverAddress.sin_family = AF_INET;
-    this->serverAddress.sin_port = htons(this->serverPort);
+    this->serverAddress.sin_port = htons(static_cast<uint16_t>(this->serverPort));
     this->resolveAddress();
 }
 
@@ -49,10 +51,18 @@ void Client::resolveAddress()
         throw runtime_error(ADDRESS_ERROR);
 }
 
+void Client::readMessage(char *buffer) const
+{
+    if (read(this->serverFileDescriptor, buffer, BUFFER_SIZE) == -1)
+    {
+        throw runtime_error(strerror(errno));
+    }
+}
+
 
 void Client::connectToServer()
 {
-    if (connect(this->serverFileDescriptor, (struct sockaddr*)&(this->serverAddress), sizeof(serverAddress)) == -1)
+    if (connect(this->serverFileDescriptor, reinterpret_cast<struct sockaddr*>(&this->serverAddress), sizeof(serverAddress)) == -1)
         throw runtime_error(CONNECT_ERROR);
 
     this->communicateWithServer();
@@ -60,5 +70,6 @@ void Client::connectToServer()
 
 void Client::communicateWithServer()
 {
-    //readMessage();
+    char buffer[BUFFER_SIZE];
+    readMessage(buffer);
 }

@@ -29,15 +29,16 @@ class Client
      */
     void resolveAddress();
 
-    void readMessage(char* buffer) const;
+    void readMessage(char *buffer) const;
     void sendMessage(const char* message) const;
 
-    void connectToServer();
-
-    void communicateWithServer();
 
 public:
         Client(const char* ipAddress, const int& serverPort);
+
+        void connectToServer();
+
+        void communicateWithServer();
 
 
 
