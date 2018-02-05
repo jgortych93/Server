@@ -41,6 +41,9 @@ void Server::initializeNewSocket()
     {
         throw runtime_error(SOCKET_INIT_FAILED);
     }
+    int enable = 1;
+    if (setsockopt(this->socketDescriptor, SOL_SOCKET, SO_REUSEADDR, &enable, sizeof(int)) < 0)
+        throw runtime_error(strerror(errno));
 }
 
 void Server::fillServerAddressStruct()
@@ -92,6 +95,7 @@ void Server::runServer()
 
         ++Server::numberOfThreads;
 
+
         ClientObject newClientObject;
         newClientObject.setUserId(Server::numberOfThreads);
         newClientObject.setConnectionDesc(clientDescriptor);
@@ -105,6 +109,7 @@ void Server::runServer()
 
 void* Server::action(void* client)
 {
+
     char messageBuffer[BUFFER_SIZE];
     bzero(messageBuffer, BUFFER_SIZE+1);
     char nameBuffer[NAME_BUFFER_SIZE];
@@ -116,9 +121,11 @@ void* Server::action(void* client)
     snprintf(nameBuffer, NAME_BUFFER_SIZE, "%d", Server::numberOfThreads);
     clientObject.setName(nameBuffer);
 
+
     try
     {
-        clientObject.sendMessage("Test message\n");
+        clientObject.sendMessage("Test message\n", clientObject.getSocketDescriptor());
+        qDebug()<<"Initial message send!\n"<<endl;
     }
     catch(exception& e){
         qDebug()<<e.what();

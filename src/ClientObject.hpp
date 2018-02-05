@@ -23,7 +23,7 @@ public:
      *
      * Function sends passed message to the client and throws exception in case of sending failure
      */
-    void sendMessage(const char* message) const;
+    void sendMessage(const char* message, int socket) const;
     int getSocketDescriptor() const {return this->connectionDesc;}
     void setClientAddress(const struct sockaddr_in& address){this->clientAddress = address;}
 };

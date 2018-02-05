@@ -57,6 +57,10 @@ void Client::readMessage(char *buffer) const
     {
         throw runtime_error(strerror(errno));
     }
+    else
+    {
+        qDebug()<<buffer<<endl;
+    }
 }
 
 
@@ -71,5 +75,7 @@ void Client::connectToServer()
 void Client::communicateWithServer()
 {
     char buffer[BUFFER_SIZE];
+    bzero(buffer, BUFFER_SIZE+1);
+
     readMessage(buffer);
 }
