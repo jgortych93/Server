@@ -38,7 +38,7 @@ public:
 
         void connectToServer();
 
-        void communicateWithServer();
+        void communicateWithServer() __attribute__ ((noreturn));
 
 
 

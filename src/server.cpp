@@ -102,7 +102,6 @@ void Server::runServer()
         newClientObject.setClientAddress(tmpAddress);
 
         pthread_create(&clientThreads[Server::numberOfThreads], NULL, action, static_cast<void*>(&newClientObject));
-        pthread_join(clientThreads[Server::numberOfThreads], NULL);
     }
 
 }
@@ -124,14 +123,23 @@ void* Server::action(void* client)
 
     try
     {
-        clientObject.sendMessage("Test message\n", clientObject.getSocketDescriptor());
+        clientObject.sendMessage("Welcome to the Server. Please type your message or configure your data by writing 'give_options'"
+                                 "To quit send 'quit_from_chat' message\n");
         qDebug()<<"Initial message send!\n"<<endl;
     }
     catch(exception& e){
         qDebug()<<e.what();
     }
 
-    read(clientObject.getSocketDescriptor(), messageBuffer, BUFFER_SIZE);
+    do{
+        read(clientObject.getSocketDescriptor(), messageBuffer, BUFFER_SIZE);
+        qDebug()<<"I am here";
+
+        char *message = strncat(const_cast<char*>(clientObject.getName()), ": ", 3);
+        message = strncat(message, messageBuffer, strlen(messageBuffer));
+        qDebug()<<"I am here";
+        qDebug()<<message;
+    }while(!strncmp(messageBuffer, "quit_from_chat", strlen(messageBuffer)));
 
 }
 

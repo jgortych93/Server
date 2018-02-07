@@ -7,9 +7,9 @@
 
 using namespace std;
 
-void ClientObject::sendMessage(const char *message, int socket) const
+void ClientObject::sendMessage(const char *message) const
 {
-    const int sendingStatus =  static_cast<const int>(write(socket, message, strlen(message)));
+    const int sendingStatus =  static_cast<const int>(write(this->connectionDesc, message, strlen(message)));
 
     if (sendingStatus < 0)
         throw runtime_error(SENDING_ERROR);

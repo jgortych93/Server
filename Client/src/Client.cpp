@@ -13,7 +13,6 @@
 #define ADDRESS_ERROR "Wrong ip address"
 #define CONNECT_ERROR "CONNECT ERROR"
 #define BUFFER_SIZE 300
-#define QUEUE_SIZE 5
 
 using namespace std;
 
@@ -63,6 +62,15 @@ void Client::readMessage(char *buffer) const
     }
 }
 
+void Client::sendMessage(const char *message) const
+{
+    qDebug() << "I am here";
+    const int sendingStatus =  static_cast<const int>(write(this->serverFileDescriptor, message, strlen(message)));
+
+    if (sendingStatus < 0)
+        throw runtime_error(SENDING_ERROR);
+}
+
 
 void Client::connectToServer()
 {
@@ -77,5 +85,12 @@ void Client::communicateWithServer()
     char buffer[BUFFER_SIZE];
     bzero(buffer, BUFFER_SIZE+1);
 
-    readMessage(buffer);
+    while(1){
+        readMessage(buffer);
+        char* messageToSend = new char[BUFFER_SIZE];
+        qDebug("Type message to send please: \n");
+        cin >> messageToSend;
+        sendMessage(messageToSend);
+    }
+
 }
