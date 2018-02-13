@@ -30,13 +30,21 @@ class Client
     void resolveAddress();
 
     void readMessage(char *buffer) const;
-    void sendMessage(const char* message) const;
+    static void sendMessage(const char* message, const int& serverDesc);
 
+    /**
+     * @brief handleTextEntering
+     * @param attrs optionable arguments
+     * @return return nothing
+     *
+     *Saves single chars to the buffer and sends message from the buffer when 'enter' key is pressed.
+     */
+    static void* handleTextEntering(void *attr);
 
 public:
         Client(const char* ipAddress, const int& serverPort);
 
-        void connectToServer();
+        void connectToServer() __attribute__((noreturn));
 
         void communicateWithServer() __attribute__ ((noreturn));
 

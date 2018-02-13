@@ -61,6 +61,7 @@ $(function() {
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
 <a href="#pri-methods">Private Member Functions</a> &#124;
+<a href="#pri-static-methods">Static Private Member Functions</a> &#124;
 <a href="#pri-attribs">Private Attributes</a> &#124;
 <a href="../../d3/d6c/classClient-members.html">List of all members</a>  </div>
   <div class="headertitle">
@@ -73,12 +74,12 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a738a9f6805537f970f169c64a9df9ee1"><td class="memItemLeft" align="right" valign="top"><a id="a738a9f6805537f970f169c64a9df9ee1"></a>
 &#160;</td><td class="memItemRight" valign="bottom"><b>Client</b> (const char *ipAddress, const int &amp;serverPort)</td></tr>
 <tr class="separator:a738a9f6805537f970f169c64a9df9ee1"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a90c1540d132405d702dbaf23225855e9"><td class="memItemLeft" align="right" valign="top"><a id="a90c1540d132405d702dbaf23225855e9"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>communicateWithServer</b> ()</td></tr>
-<tr class="separator:a90c1540d132405d702dbaf23225855e9"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a484b660517d6a610b6733bee7e96cb8c"><td class="memItemLeft" align="right" valign="top"><a id="a484b660517d6a610b6733bee7e96cb8c"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>connectToServer</b> ()</td></tr>
-<tr class="separator:a484b660517d6a610b6733bee7e96cb8c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ababa365ecacedad2a111016ed4e498c7"><td class="memItemLeft" align="right" valign="top"><a id="ababa365ecacedad2a111016ed4e498c7"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>connectToServer</b> () __attribute__((noreturn))</td></tr>
+<tr class="separator:ababa365ecacedad2a111016ed4e498c7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aeada9cd75381f4036f8e0b7d8a717939"><td class="memItemLeft" align="right" valign="top"><a id="aeada9cd75381f4036f8e0b7d8a717939"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>communicateWithServer</b> () __attribute__((noreturn))</td></tr>
+<tr class="separator:aeada9cd75381f4036f8e0b7d8a717939"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-methods"></a>
 Private Member Functions</h2></td></tr>
@@ -91,27 +92,30 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>initializeNewSocket</
 <tr class="memitem:a68e3bdb6ca10ee50268f219d58b6a3e3"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d1/d37/classClient.html#a68e3bdb6ca10ee50268f219d58b6a3e3">resolveAddress</a> ()</td></tr>
 <tr class="memdesc:a68e3bdb6ca10ee50268f219d58b6a3e3"><td class="mdescLeft">&#160;</td><td class="mdescRight">resolveAddress  <a href="#a68e3bdb6ca10ee50268f219d58b6a3e3">More...</a><br /></td></tr>
 <tr class="separator:a68e3bdb6ca10ee50268f219d58b6a3e3"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa9bed21a29c607963ebb0f1701a38128"><td class="memItemLeft" align="right" valign="top"><a id="aa9bed21a29c607963ebb0f1701a38128"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>bindSocket</b> ()</td></tr>
-<tr class="separator:aa9bed21a29c607963ebb0f1701a38128"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a288e15b64d5c25488e53dd34ba2315f2"><td class="memItemLeft" align="right" valign="top"><a id="a288e15b64d5c25488e53dd34ba2315f2"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>listenOnSocket</b> ()</td></tr>
-<tr class="separator:a288e15b64d5c25488e53dd34ba2315f2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aef8421b20a32263125e44387405b7aef"><td class="memItemLeft" align="right" valign="top"><a id="aef8421b20a32263125e44387405b7aef"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>readMessage</b> (char *buffer) const</td></tr>
 <tr class="separator:aef8421b20a32263125e44387405b7aef"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a02c78116ceed8391aaeb15a6f1d1026f"><td class="memItemLeft" align="right" valign="top"><a id="a02c78116ceed8391aaeb15a6f1d1026f"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>sendMessage</b> (const char *message) const</td></tr>
-<tr class="separator:a02c78116ceed8391aaeb15a6f1d1026f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-static-methods"></a>
+Static Private Member Functions</h2></td></tr>
+<tr class="memitem:a12b2e78efc9c7cfb0b6054b84dcb8b2b"><td class="memItemLeft" align="right" valign="top"><a id="a12b2e78efc9c7cfb0b6054b84dcb8b2b"></a>
+static void&#160;</td><td class="memItemRight" valign="bottom"><b>sendMessage</b> (const char *message, const int &amp;serverDesc)</td></tr>
+<tr class="separator:a12b2e78efc9c7cfb0b6054b84dcb8b2b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac5bd556f663337b31a577fd0c4d20b7d"><td class="memItemLeft" align="right" valign="top">static void *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d1/d37/classClient.html#ac5bd556f663337b31a577fd0c4d20b7d">handleTextEntering</a> (void *attr)</td></tr>
+<tr class="memdesc:ac5bd556f663337b31a577fd0c4d20b7d"><td class="mdescLeft">&#160;</td><td class="mdescRight">handleTextEntering  <a href="#ac5bd556f663337b31a577fd0c4d20b7d">More...</a><br /></td></tr>
+<tr class="separator:ac5bd556f663337b31a577fd0c4d20b7d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-attribs"></a>
 Private Attributes</h2></td></tr>
 <tr class="memitem:af4529e7aa1a4e33f1188eec378aa67ca"><td class="memItemLeft" align="right" valign="top"><a id="af4529e7aa1a4e33f1188eec378aa67ca"></a>
 const char *&#160;</td><td class="memItemRight" valign="bottom"><b>ipAddress</b></td></tr>
 <tr class="separator:af4529e7aa1a4e33f1188eec378aa67ca"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8f39b17f10ded0b0e5002e40c13bdde4"><td class="memItemLeft" align="right" valign="top"><a id="a8f39b17f10ded0b0e5002e40c13bdde4"></a>
-int&#160;</td><td class="memItemRight" valign="bottom"><b>fileDescriptor</b></td></tr>
-<tr class="separator:a8f39b17f10ded0b0e5002e40c13bdde4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa76d70f374ad1e46f20dae0b7144c7f0"><td class="memItemLeft" align="right" valign="top"><a id="aa76d70f374ad1e46f20dae0b7144c7f0"></a>
+int&#160;</td><td class="memItemRight" valign="bottom"><b>serverFileDescriptor</b></td></tr>
+<tr class="separator:aa76d70f374ad1e46f20dae0b7144c7f0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a25f4f12005a1527b584c3f1324b43fcf"><td class="memItemLeft" align="right" valign="top"><a id="a25f4f12005a1527b584c3f1324b43fcf"></a>
+int&#160;</td><td class="memItemRight" valign="bottom"><b>clientFileDescriptor</b></td></tr>
+<tr class="separator:a25f4f12005a1527b584c3f1324b43fcf"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4345c8b8a92e6fb5a66e89694ef003e1"><td class="memItemLeft" align="right" valign="top"><a id="a4345c8b8a92e6fb5a66e89694ef003e1"></a>
 int&#160;</td><td class="memItemRight" valign="bottom"><b>serverPort</b></td></tr>
 <tr class="separator:a4345c8b8a92e6fb5a66e89694ef003e1"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -145,6 +149,42 @@ struct sockaddr_in&#160;</td><td class="memItemRight" valign="bottom"><b>serverA
 
 <p>fillServerAddressStruct </p>
 <p>Fills serverAddress struct with all data needed for proper comunication </p>
+
+</div>
+</div>
+<a id="ac5bd556f663337b31a577fd0c4d20b7d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac5bd556f663337b31a577fd0c4d20b7d">&#9670;&nbsp;</a></span>handleTextEntering()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void * Client::handleTextEntering </td>
+          <td>(</td>
+          <td class="paramtype">void *&#160;</td>
+          <td class="paramname"><em>attr</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>handleTextEntering </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">attrs</td><td>optionable arguments </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>return nothing</dd></dl>
+<p>Saves single chars to the buffer and sends message from the buffer when 'enter' key is pressed. </p>
 
 </div>
 </div>

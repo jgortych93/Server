@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['runserver',['runServer',['../db/d00/classServer.html#a5dfdd750d32aa4adbb4fdd8ba29b1224',1,'Server']]]
+  ['resolveaddress',['resolveAddress',['../d1/d37/classClient.html#a68e3bdb6ca10ee50268f219d58b6a3e3',1,'Client']]]
 ];

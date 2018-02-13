@@ -2,6 +2,7 @@
 #include <stdexcept>
 #include <iostream>
 #include <unistd.h>
+#include <pthread.h>
 #include <QtCore/qdebug.h>
 
 #define SOCKET_INIT_FAILED "Socket initalization failed"
@@ -50,27 +51,6 @@ void Client::resolveAddress()
         throw runtime_error(ADDRESS_ERROR);
 }
 
-void Client::readMessage(char *buffer) const
-{
-    if (read(this->serverFileDescriptor, buffer, BUFFER_SIZE) == -1)
-    {
-        throw runtime_error(strerror(errno));
-    }
-    else
-    {
-        qDebug()<<buffer<<endl;
-    }
-}
-
-void Client::sendMessage(const char *message) const
-{
-    qDebug() << "I am here";
-    const int sendingStatus =  static_cast<const int>(write(this->serverFileDescriptor, message, strlen(message)));
-
-    if (sendingStatus < 0)
-        throw runtime_error(SENDING_ERROR);
-}
-
 
 void Client::connectToServer()
 {
@@ -84,13 +64,47 @@ void Client::communicateWithServer()
 {
     char buffer[BUFFER_SIZE];
     bzero(buffer, BUFFER_SIZE+1);
+    qDebug("Type message to send please: \n");
+
+    pthread_create(new pthread_t(), NULL, handleTextEntering, static_cast<void*>(&this->serverFileDescriptor));
 
     while(1){
         readMessage(buffer);
-        char* messageToSend = new char[BUFFER_SIZE];
-        qDebug("Type message to send please: \n");
-        cin >> messageToSend;
-        sendMessage(messageToSend);
     }
 
+}
+
+void Client::readMessage(char *buffer) const
+{
+    if (read(this->serverFileDescriptor, buffer, BUFFER_SIZE) == -1)
+    {
+        throw runtime_error(strerror(errno));
+    }
+    else
+    {
+        qDebug()<<buffer<<endl;
+        bzero(buffer, BUFFER_SIZE+1);
+    }
+}
+
+void* Client::handleTextEntering(void * serverDesc)
+{
+    char* messageBuffer = new char[BUFFER_SIZE];
+    bzero(messageBuffer, BUFFER_SIZE);
+
+    while(1){
+        QTextStream qtin(stdin);
+        qtin >> messageBuffer;
+        sendMessage(messageBuffer, *static_cast<int*>(serverDesc));
+        bzero(messageBuffer, BUFFER_SIZE);
+    }
+
+}
+
+void Client::sendMessage(const char *message, const int& serverDesc)
+{
+    const int sendingStatus =  static_cast<const int>(write(serverDesc, message, strlen(message)));
+
+    if (sendingStatus < 0)
+        throw runtime_error(SENDING_ERROR);
 }

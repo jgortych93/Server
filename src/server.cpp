@@ -133,13 +133,13 @@ void* Server::action(void* client)
 
     do{
         read(clientObject.getSocketDescriptor(), messageBuffer, BUFFER_SIZE);
-        qDebug()<<"I am here";
+        char *clientId = new char[BUFFER_SIZE];
+        bzero(clientId,BUFFER_SIZE+1);
+        char* message = new char[BUFFER_SIZE];
 
-        char *message = strncat(const_cast<char*>(clientObject.getName()), ": ", 3);
-        message = strncat(message, messageBuffer, strlen(messageBuffer));
-        qDebug()<<"I am here";
+        snprintf(message, BUFFER_SIZE-1, "%s: %s",clientObject.getName(), messageBuffer);
         qDebug()<<message;
-    }while(!strncmp(messageBuffer, "quit_from_chat", strlen(messageBuffer)));
+    }while(!strncmp(messageBuffer, "quit_from_chat", BUFFER_SIZE));
 
 }
 

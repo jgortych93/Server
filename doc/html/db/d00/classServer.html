@@ -111,9 +111,6 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>portNumber</b></td></t
 <tr class="memitem:a0a84291035718de02da7e2c4e661f2a1"><td class="memItemLeft" align="right" valign="top"><a id="a0a84291035718de02da7e2c4e661f2a1"></a>
 struct sockaddr_in&#160;</td><td class="memItemRight" valign="bottom"><b>serverAddress</b></td></tr>
 <tr class="separator:a0a84291035718de02da7e2c4e661f2a1"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:acdd70cf1b3b5724edd46307b017d8123"><td class="memItemLeft" align="right" valign="top"><a id="acdd70cf1b3b5724edd46307b017d8123"></a>
-struct sockaddr_in&#160;</td><td class="memItemRight" valign="bottom"><b>clientAddress</b></td></tr>
-<tr class="separator:acdd70cf1b3b5724edd46307b017d8123"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2659f052c537f44a27d2aef4ad079957"><td class="memItemLeft" align="right" valign="top"><a id="a2659f052c537f44a27d2aef4ad079957"></a>
 pthread_t&#160;</td><td class="memItemRight" valign="bottom"><b>clientThreads</b> [QUEUE_SIZE]</td></tr>
 <tr class="separator:a2659f052c537f44a27d2aef4ad079957"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -121,7 +118,7 @@ pthread_t&#160;</td><td class="memItemRight" valign="bottom"><b>clientThreads</b
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-static-attribs"></a>
 Static Private Attributes</h2></td></tr>
 <tr class="memitem:ab11a1028476d4235bf3a2d8f468d2b81"><td class="memItemLeft" align="right" valign="top"><a id="ab11a1028476d4235bf3a2d8f468d2b81"></a>
-static uint&#160;</td><td class="memItemRight" valign="bottom"><b>numberOfThreads</b></td></tr>
+static uint&#160;</td><td class="memItemRight" valign="bottom"><b>numberOfThreads</b> = 0</td></tr>
 <tr class="separator:ab11a1028476d4235bf3a2d8f468d2b81"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Member Function Documentation</h2>

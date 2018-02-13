@@ -33,5 +33,5 @@ file(GLOB SOURCES ${CMAKE_CURRENT_SOURCE_DIR}/*.cpp)
 add_executable( ${PROJECT_NAME} ${SOURCES})
 
 # build it (link libraries)
-target_link_libraries( ${PROJECT_NAME} ${QT_LIBRARIES} )
+target_link_libraries( ${PROJECT_NAME} ${QT_LIBRARIES} pthread)
 

@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['resolveaddress',['resolveAddress',['../d1/d37/classClient.html#a68e3bdb6ca10ee50268f219d58b6a3e3',1,'Client']]]
+  ['handletextentering',['handleTextEntering',['../d1/d37/classClient.html#ac5bd556f663337b31a577fd0c4d20b7d',1,'Client']]]
 ];

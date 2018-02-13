@@ -6,11 +6,11 @@
 \mbox{\Hypertarget{classClient_a738a9f6805537f970f169c64a9df9ee1}\label{classClient_a738a9f6805537f970f169c64a9df9ee1}} 
 {\bfseries Client} (const char $\ast$ip\+Address, const int \&server\+Port)
 \item 
-\mbox{\Hypertarget{classClient_a90c1540d132405d702dbaf23225855e9}\label{classClient_a90c1540d132405d702dbaf23225855e9}} 
-void {\bfseries communicate\+With\+Server} ()
+\mbox{\Hypertarget{classClient_ababa365ecacedad2a111016ed4e498c7}\label{classClient_ababa365ecacedad2a111016ed4e498c7}} 
+void {\bfseries connect\+To\+Server} () \+\_\+\+\_\+attribute\+\_\+\+\_\+((noreturn))
 \item 
-\mbox{\Hypertarget{classClient_a484b660517d6a610b6733bee7e96cb8c}\label{classClient_a484b660517d6a610b6733bee7e96cb8c}} 
-void {\bfseries connect\+To\+Server} ()
+\mbox{\Hypertarget{classClient_aeada9cd75381f4036f8e0b7d8a717939}\label{classClient_aeada9cd75381f4036f8e0b7d8a717939}} 
+void {\bfseries communicate\+With\+Server} () \+\_\+\+\_\+attribute\+\_\+\+\_\+((noreturn))
 \end{DoxyCompactItemize}
 \subsection*{Private Member Functions}
 \begin{DoxyCompactItemize}
@@ -22,26 +22,28 @@ void \hyperlink{classClient_a214cdda23175ba7cc4f94037730cbfd4}{fill\+Server\+Add
 \begin{DoxyCompactList}\small\item\em fill\+Server\+Address\+Struct \end{DoxyCompactList}\item 
 void \hyperlink{classClient_a68e3bdb6ca10ee50268f219d58b6a3e3}{resolve\+Address} ()
 \begin{DoxyCompactList}\small\item\em resolve\+Address \end{DoxyCompactList}\item 
-\mbox{\Hypertarget{classClient_aa9bed21a29c607963ebb0f1701a38128}\label{classClient_aa9bed21a29c607963ebb0f1701a38128}} 
-void {\bfseries bind\+Socket} ()
-\item 
-\mbox{\Hypertarget{classClient_a288e15b64d5c25488e53dd34ba2315f2}\label{classClient_a288e15b64d5c25488e53dd34ba2315f2}} 
-void {\bfseries listen\+On\+Socket} ()
-\item 
 \mbox{\Hypertarget{classClient_aef8421b20a32263125e44387405b7aef}\label{classClient_aef8421b20a32263125e44387405b7aef}} 
 void {\bfseries read\+Message} (char $\ast$buffer) const
-\item 
-\mbox{\Hypertarget{classClient_a02c78116ceed8391aaeb15a6f1d1026f}\label{classClient_a02c78116ceed8391aaeb15a6f1d1026f}} 
-void {\bfseries send\+Message} (const char $\ast$message) const
 \end{DoxyCompactItemize}
+\subsection*{Static Private Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classClient_a12b2e78efc9c7cfb0b6054b84dcb8b2b}\label{classClient_a12b2e78efc9c7cfb0b6054b84dcb8b2b}} 
+static void {\bfseries send\+Message} (const char $\ast$message, const int \&server\+Desc)
+\item 
+static void $\ast$ \hyperlink{classClient_ac5bd556f663337b31a577fd0c4d20b7d}{handle\+Text\+Entering} (void $\ast$attr)
+\begin{DoxyCompactList}\small\item\em handle\+Text\+Entering \end{DoxyCompactList}\end{DoxyCompactItemize}
 \subsection*{Private Attributes}
 \begin{DoxyCompactItemize}
 \item 
 \mbox{\Hypertarget{classClient_af4529e7aa1a4e33f1188eec378aa67ca}\label{classClient_af4529e7aa1a4e33f1188eec378aa67ca}} 
 const char $\ast$ {\bfseries ip\+Address}
 \item 
-\mbox{\Hypertarget{classClient_a8f39b17f10ded0b0e5002e40c13bdde4}\label{classClient_a8f39b17f10ded0b0e5002e40c13bdde4}} 
-int {\bfseries file\+Descriptor}
+\mbox{\Hypertarget{classClient_aa76d70f374ad1e46f20dae0b7144c7f0}\label{classClient_aa76d70f374ad1e46f20dae0b7144c7f0}} 
+int {\bfseries server\+File\+Descriptor}
+\item 
+\mbox{\Hypertarget{classClient_a25f4f12005a1527b584c3f1324b43fcf}\label{classClient_a25f4f12005a1527b584c3f1324b43fcf}} 
+int {\bfseries client\+File\+Descriptor}
 \item 
 \mbox{\Hypertarget{classClient_a4345c8b8a92e6fb5a66e89694ef003e1}\label{classClient_a4345c8b8a92e6fb5a66e89694ef003e1}} 
 int {\bfseries server\+Port}
@@ -62,7 +64,25 @@ struct sockaddr\+\_\+in {\bfseries server\+Address}
 
 fill\+Server\+Address\+Struct 
 
-Fills server\+Address struct with all data needed for proper comunication \mbox{\Hypertarget{classClient_a68e3bdb6ca10ee50268f219d58b6a3e3}\label{classClient_a68e3bdb6ca10ee50268f219d58b6a3e3}} 
+Fills server\+Address struct with all data needed for proper comunication \mbox{\Hypertarget{classClient_ac5bd556f663337b31a577fd0c4d20b7d}\label{classClient_ac5bd556f663337b31a577fd0c4d20b7d}} 
+\index{Client@{Client}!handle\+Text\+Entering@{handle\+Text\+Entering}}
+\index{handle\+Text\+Entering@{handle\+Text\+Entering}!Client@{Client}}
+\subsubsection{\texorpdfstring{handle\+Text\+Entering()}{handleTextEntering()}}
+{\footnotesize\ttfamily void $\ast$ Client\+::handle\+Text\+Entering (\begin{DoxyParamCaption}\item[{void $\ast$}]{attr }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}, {\ttfamily [private]}}
+
+
+
+handle\+Text\+Entering 
+
+
+\begin{DoxyParams}{Parameters}
+{\em attrs} & optionable arguments \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+return nothing
+\end{DoxyReturn}
+Saves single chars to the buffer and sends message from the buffer when \textquotesingle{}enter\textquotesingle{} key is pressed. \mbox{\Hypertarget{classClient_a68e3bdb6ca10ee50268f219d58b6a3e3}\label{classClient_a68e3bdb6ca10ee50268f219d58b6a3e3}} 
 \index{Client@{Client}!resolve\+Address@{resolve\+Address}}
 \index{resolve\+Address@{resolve\+Address}!Client@{Client}}
 \subsubsection{\texorpdfstring{resolve\+Address()}{resolveAddress()}}
