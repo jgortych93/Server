@@ -89,16 +89,17 @@ void Client::readMessage(char *buffer) const
 
 void* Client::handleTextEntering(void * serverDesc)
 {
-    char* messageBuffer = new char[BUFFER_SIZE];
-    bzero(messageBuffer, BUFFER_SIZE);
-
     while(1){
-        QTextStream qtin(stdin);
-        qtin >> messageBuffer;
-        sendMessage(messageBuffer, *static_cast<int*>(serverDesc));
-        bzero(messageBuffer, BUFFER_SIZE);
-    }
 
+        QTextStream qtin(stdin);
+        QString line = qtin.readLine();
+
+        QByteArray ba = line.toLatin1();
+        char *messageBuffer = ba.data();
+
+        sendMessage(messageBuffer, *static_cast<int*>(serverDesc));
+
+    }
 }
 
 void Client::sendMessage(const char *message, const int& serverDesc)
@@ -107,4 +108,5 @@ void Client::sendMessage(const char *message, const int& serverDesc)
 
     if (sendingStatus < 0)
         throw runtime_error(SENDING_ERROR);
+
 }

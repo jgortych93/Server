@@ -132,6 +132,8 @@ void* Server::action(void* client)
     }
 
     do{
+        bzero(messageBuffer, BUFFER_SIZE+1);
+
         read(clientObject.getSocketDescriptor(), messageBuffer, BUFFER_SIZE);
         char *clientId = new char[BUFFER_SIZE];
         bzero(clientId,BUFFER_SIZE+1);
@@ -139,7 +141,10 @@ void* Server::action(void* client)
 
         snprintf(message, BUFFER_SIZE-1, "%s: %s",clientObject.getName(), messageBuffer);
         qDebug()<<message;
-    }while(!strncmp(messageBuffer, "quit_from_chat", BUFFER_SIZE));
+
+        delete[] clientId;
+        delete[] message;
+    }while(strncmp(messageBuffer, "quit_from_chat", BUFFER_SIZE) != 0);
 
 }
 

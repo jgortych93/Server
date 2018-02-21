@@ -2,6 +2,7 @@ cmake_minimum_required(VERSION 2.8)
 
 SET(CMAKE_CURRENT_SOURCE_DIR /media/jakub/2AC2CCF9C2CCCA71/Programowanie/Projects/Server_Project/Client/src)
 SET(CMAKE_BINARY_DIR ../../build-Client-Desktop_Qt_5_9_0_GCC_64bit-Default)
+SET(CMAKE_BUILD_TYPE Debug)
 
 project(Client)
 
