@@ -16,6 +16,7 @@ class Server
     int portNumber;
     struct sockaddr_in serverAddress;
     pthread_t clientThreads[QUEUE_SIZE];
+    ClientObject clients[QUEUE_SIZE];
     static uint numberOfThreads;
 
 
@@ -36,6 +37,8 @@ class Server
      * Standard action that new client thread executes. It creates new ClientObject instance and sends initial message
      */
     static void* action(void* clientDesc);
+
+    void broadcastMessage(const char *message) const;
 public:
     Server(const int& portNumber);
     /**
@@ -44,6 +47,7 @@ public:
      * Method listens for new connections, accepts them and creates new thread for each new connection
      */
     void runServer();
+
 
 
 

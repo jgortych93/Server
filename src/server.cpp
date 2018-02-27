@@ -1,4 +1,5 @@
 #include "server.hpp"
+#include "ActionArguments.h"
 #include <iostream>
 #include <exception>
 #include <string.h>
@@ -100,30 +101,35 @@ void Server::runServer()
         newClientObject.setUserId(Server::numberOfThreads);
         newClientObject.setConnectionDesc(clientDescriptor);
         newClientObject.setClientAddress(tmpAddress);
+        this->clients[numberOfThreads-1] = newClientObject;
 
-        pthread_create(&clientThreads[Server::numberOfThreads], NULL, action, static_cast<void*>(&newClientObject));
+        ActionArguments actionArguments(newClientObject, *this);
+
+        pthread_create(&clientThreads[Server::numberOfThreads], NULL, action, static_cast<void*>(&actionArguments));
     }
 
 }
 
-void* Server::action(void* client)
+void* Server::action(void* args)
 {
+    ActionArguments arguments = *(static_cast<ActionArguments*>(args));
 
     char messageBuffer[BUFFER_SIZE];
     bzero(messageBuffer, BUFFER_SIZE+1);
     char nameBuffer[NAME_BUFFER_SIZE];
     bzero(nameBuffer, NAME_BUFFER_SIZE+1);
 
-    ClientObject clientObject = *static_cast<ClientObject *>(client);
+    ClientObject* clientObject = &arguments.client;
+    Server* serverInstance = &arguments.server;
 
     // default name is thread number
     snprintf(nameBuffer, NAME_BUFFER_SIZE, "%d", Server::numberOfThreads);
-    clientObject.setName(nameBuffer);
+    clientObject->setName(nameBuffer);
 
 
     try
     {
-        clientObject.sendMessage("Welcome to the Server. Please type your message or configure your data by writing 'give_options'"
+        clientObject->sendMessage("Welcome to the Server. Please type your message or configure your data by writing 'give_options'"
                                  "To quit send 'quit_from_chat' message\n");
         qDebug()<<"Initial message send!\n"<<endl;
     }
@@ -134,17 +140,25 @@ void* Server::action(void* client)
     do{
         bzero(messageBuffer, BUFFER_SIZE+1);
 
-        read(clientObject.getSocketDescriptor(), messageBuffer, BUFFER_SIZE);
+        read(clientObject->getSocketDescriptor(), messageBuffer, BUFFER_SIZE);
         char *clientId = new char[BUFFER_SIZE];
         bzero(clientId,BUFFER_SIZE+1);
         char* message = new char[BUFFER_SIZE];
 
-        snprintf(message, BUFFER_SIZE-1, "%s: %s",clientObject.getName(), messageBuffer);
+        snprintf(message, BUFFER_SIZE-1, "%s: %s",clientObject->getName(), messageBuffer);
         qDebug()<<message;
+        serverInstance->broadcastMessage(message);
 
         delete[] clientId;
         delete[] message;
     }while(strncmp(messageBuffer, "quit_from_chat", BUFFER_SIZE) != 0);
 
+}
+
+void Server::broadcastMessage(const char* message) const
+{
+    for (int i=0; i<Server::numberOfThreads-1; ++i){
+
+    }
 }
 
