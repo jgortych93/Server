@@ -137,6 +137,8 @@ void* Server::action(void* args)
         qDebug()<<e.what();
     }
 
+    const int clientDesc = clientObject->getSocketDescriptor();
+
     do{
         bzero(messageBuffer, BUFFER_SIZE+1);
 
@@ -147,7 +149,7 @@ void* Server::action(void* args)
 
         snprintf(message, BUFFER_SIZE-1, "%s: %s",clientObject->getName(), messageBuffer);
         qDebug()<<message;
-        serverInstance->broadcastMessage(message);
+        serverInstance->broadcastMessage(message, clientDesc);
 
         delete[] clientId;
         delete[] message;
@@ -155,10 +157,12 @@ void* Server::action(void* args)
 
 }
 
-void Server::broadcastMessage(const char* message) const
+void Server::broadcastMessage(const char* message, const int& clientDescriptor) const
 {
-    for (int i=0; i<Server::numberOfThreads-1; ++i){
-
+    for (uint i=0; i<Server::numberOfThreads-1; ++i){
+        if (this->clients[i].getSocketDescriptor() != clientDescriptor){
+            this->clients[i].sendMessage(message);
+        }
     }
 }
 

@@ -38,7 +38,7 @@ class Server
      */
     static void* action(void* clientDesc);
 
-    void broadcastMessage(const char *message) const;
+    void broadcastMessage(const char *message, const int &clientDescriptor) const;
 public:
     Server(const int& portNumber);
     /**
