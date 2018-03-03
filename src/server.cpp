@@ -22,6 +22,7 @@ uint Server::numberOfThreads = 0;
 Server::Server(const int& portNumber)
 {
     this->portNumber = portNumber;
+    this->clients = new ClientObject*[QUEUE_SIZE];
 
     try{
         initializeNewSocket();
@@ -97,13 +98,14 @@ void Server::runServer()
         ++Server::numberOfThreads;
 
 
-        ClientObject newClientObject;
-        newClientObject.setUserId(Server::numberOfThreads);
-        newClientObject.setConnectionDesc(clientDescriptor);
-        newClientObject.setClientAddress(tmpAddress);
+        ClientObject* newClientObject = new ClientObject();
+        newClientObject->setUserId(Server::numberOfThreads);
+        newClientObject->setConnectionDesc(clientDescriptor);
+        newClientObject->setClientAddress(tmpAddress);
+        this->clients[numberOfThreads-1] = new ClientObject[1];
         this->clients[numberOfThreads-1] = newClientObject;
 
-        ActionArguments actionArguments(newClientObject, *this);
+        ActionArguments actionArguments(newClientObject, this);
 
         pthread_create(&clientThreads[Server::numberOfThreads], NULL, action, static_cast<void*>(&actionArguments));
     }
@@ -119,13 +121,14 @@ void* Server::action(void* args)
     char nameBuffer[NAME_BUFFER_SIZE];
     bzero(nameBuffer, NAME_BUFFER_SIZE+1);
 
-    ClientObject* clientObject = &arguments.client;
-    Server* serverInstance = &arguments.server;
+    ClientObject* clientObject = arguments.client;
+    const Server* serverInstance = arguments.server;
 
     // default name is thread number
     snprintf(nameBuffer, NAME_BUFFER_SIZE, "%d", Server::numberOfThreads);
     clientObject->setName(nameBuffer);
 
+    const int clientDesc = clientObject->getConnectionDesc();
 
     try
     {
@@ -137,12 +140,10 @@ void* Server::action(void* args)
         qDebug()<<e.what();
     }
 
-    const int clientDesc = clientObject->getSocketDescriptor();
-
     do{
         bzero(messageBuffer, BUFFER_SIZE+1);
 
-        read(clientObject->getSocketDescriptor(), messageBuffer, BUFFER_SIZE);
+        read(clientObject->getConnectionDesc(), messageBuffer, BUFFER_SIZE);
         char *clientId = new char[BUFFER_SIZE];
         bzero(clientId,BUFFER_SIZE+1);
         char* message = new char[BUFFER_SIZE];
@@ -159,9 +160,9 @@ void* Server::action(void* args)
 
 void Server::broadcastMessage(const char* message, const int& clientDescriptor) const
 {
-    for (uint i=0; i<Server::numberOfThreads-1; ++i){
-        if (this->clients[i].getSocketDescriptor() != clientDescriptor){
-            this->clients[i].sendMessage(message);
+    for (uint i=0; i<Server::numberOfThreads; ++i){
+        if (this->clients[i]->getConnectionDesc() != clientDescriptor){
+            this->clients[i]->sendMessage(message);
         }
     }
 }

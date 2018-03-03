@@ -12,10 +12,10 @@
  */
 typedef struct ActionArguments
 {
-    ClientObject client;
-    Server server;
+    ClientObject* client;
+    const Server* server;
 
-    ActionArguments(const ClientObject& clientObject, const Server& server):client(clientObject), server(server){}
+    ActionArguments(ClientObject* clientObject, const Server* server):client(clientObject), server(server){}
 
 }ActionArguments;
 

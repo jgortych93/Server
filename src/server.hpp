@@ -16,7 +16,7 @@ class Server
     int portNumber;
     struct sockaddr_in serverAddress;
     pthread_t clientThreads[QUEUE_SIZE];
-    ClientObject clients[QUEUE_SIZE];
+    ClientObject** clients;
     static uint numberOfThreads;
 
 
