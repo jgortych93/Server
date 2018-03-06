@@ -16,7 +16,7 @@ class Server
     int portNumber;
     struct sockaddr_in serverAddress;
     pthread_t clientThreads[QUEUE_SIZE];
-    ClientObject** clients;
+    ClientObject clients[QUEUE_SIZE];
     static uint numberOfThreads;
 
 
@@ -38,7 +38,16 @@ class Server
      */
     static void* action(void* clientDesc);
 
+    /**
+     * @brief broadcastMessage
+     * @param message
+     * @param clientDescriptor The descriptor of client who send the message
+     *
+     * Broadcasts message to all the clients without the one with given clientDescriptor
+     */
     void broadcastMessage(const char *message, const int &clientDescriptor) const;
+
+    void handleOptionsInterface(const ClientObject *client) const;
 public:
     Server(const int& portNumber);
     /**

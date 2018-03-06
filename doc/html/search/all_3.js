@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['name',['name',['../d7/d80/classClientObject.html#a29fa4c21633a35a7321e255e7ac10dbc',1,'ClientObject']]]
+  ['fillserveraddressstruct',['fillServerAddressStruct',['../db/d00/classServer.html#a684bf0fce1ec62711a60d0cc3d25e8f8',1,'Server']]]
 ];

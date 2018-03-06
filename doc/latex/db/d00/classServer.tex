@@ -22,8 +22,10 @@ void {\bfseries bind\+Socket} ()
 \mbox{\Hypertarget{classServer_ab021d8bdec2e65ef97537b9542e946a2}\label{classServer_ab021d8bdec2e65ef97537b9542e946a2}} 
 void {\bfseries listen\+On\+Socket} ()
 \item 
-\mbox{\Hypertarget{classServer_a0ca5d8b118ec963af90ffce050988753}\label{classServer_a0ca5d8b118ec963af90ffce050988753}} 
-void {\bfseries broadcast\+Message} (const char $\ast$message) const
+void \hyperlink{classServer_a7153ea97c1112ae9dc61c65dc59c7f82}{broadcast\+Message} (const char $\ast$message, const int \&client\+Descriptor) const
+\begin{DoxyCompactList}\small\item\em broadcast\+Message \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classServer_a24de25ecc28d8e0202a09c0ae5f7e98f}\label{classServer_a24de25ecc28d8e0202a09c0ae5f7e98f}} 
+void {\bfseries handle\+Options\+Interface} (const \hyperlink{classClientObject}{Client\+Object} $\ast$client) const
 \end{DoxyCompactItemize}
 \subsection*{Static Private Member Functions}
 \begin{DoxyCompactItemize}
@@ -75,7 +77,24 @@ action
 \begin{DoxyReturn}{Returns}
 
 \end{DoxyReturn}
-Standard action that new client thread executes. It creates new \hyperlink{classClientObject}{Client\+Object} instance and sends initial message \mbox{\Hypertarget{classServer_a684bf0fce1ec62711a60d0cc3d25e8f8}\label{classServer_a684bf0fce1ec62711a60d0cc3d25e8f8}} 
+Standard action that new client thread executes. It creates new \hyperlink{classClientObject}{Client\+Object} instance and sends initial message \mbox{\Hypertarget{classServer_a7153ea97c1112ae9dc61c65dc59c7f82}\label{classServer_a7153ea97c1112ae9dc61c65dc59c7f82}} 
+\index{Server@{Server}!broadcast\+Message@{broadcast\+Message}}
+\index{broadcast\+Message@{broadcast\+Message}!Server@{Server}}
+\subsubsection{\texorpdfstring{broadcast\+Message()}{broadcastMessage()}}
+{\footnotesize\ttfamily void Server\+::broadcast\+Message (\begin{DoxyParamCaption}\item[{const char $\ast$}]{message,  }\item[{const int \&}]{client\+Descriptor }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+broadcast\+Message 
+
+
+\begin{DoxyParams}{Parameters}
+{\em message} & \\
+\hline
+{\em client\+Descriptor} & The descriptor of client who send the message\\
+\hline
+\end{DoxyParams}
+Broadcasts message to all the clients without the one with given client\+Descriptor \mbox{\Hypertarget{classServer_a684bf0fce1ec62711a60d0cc3d25e8f8}\label{classServer_a684bf0fce1ec62711a60d0cc3d25e8f8}} 
 \index{Server@{Server}!fill\+Server\+Address\+Struct@{fill\+Server\+Address\+Struct}}
 \index{fill\+Server\+Address\+Struct@{fill\+Server\+Address\+Struct}!Server@{Server}}
 \subsubsection{\texorpdfstring{fill\+Server\+Address\+Struct()}{fillServerAddressStruct()}}

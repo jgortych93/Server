@@ -22,7 +22,6 @@ uint Server::numberOfThreads = 0;
 Server::Server(const int& portNumber)
 {
     this->portNumber = portNumber;
-    this->clients = new ClientObject*[QUEUE_SIZE];
 
     try{
         initializeNewSocket();
@@ -98,11 +97,10 @@ void Server::runServer()
         ++Server::numberOfThreads;
 
 
-        ClientObject* newClientObject = new ClientObject();
-        newClientObject->setUserId(Server::numberOfThreads);
-        newClientObject->setConnectionDesc(clientDescriptor);
-        newClientObject->setClientAddress(tmpAddress);
-        this->clients[numberOfThreads-1] = new ClientObject[1];
+        ClientObject newClientObject;
+        newClientObject.setUserId(Server::numberOfThreads);
+        newClientObject.setConnectionDesc(clientDescriptor);
+        newClientObject.setClientAddress(tmpAddress);
         this->clients[numberOfThreads-1] = newClientObject;
 
         ActionArguments actionArguments(newClientObject, this);
@@ -121,7 +119,7 @@ void* Server::action(void* args)
     char nameBuffer[NAME_BUFFER_SIZE];
     bzero(nameBuffer, NAME_BUFFER_SIZE+1);
 
-    ClientObject* clientObject = arguments.client;
+    ClientObject* clientObject = &arguments.client;
     const Server* serverInstance = arguments.server;
 
     // default name is thread number
@@ -132,8 +130,8 @@ void* Server::action(void* args)
 
     try
     {
-        clientObject->sendMessage("Welcome to the Server. Please type your message or configure your data by writing 'give_options'"
-                                 "To quit send 'quit_from_chat' message\n");
+        clientObject->sendMessage("Welcome to the Server. Please type your message or configure your data by writing '~options'"
+                                 "To quit send '~quit' message\n");
         qDebug()<<"Initial message send!\n"<<endl;
     }
     catch(exception& e){
@@ -141,29 +139,63 @@ void* Server::action(void* args)
     }
 
     do{
-        bzero(messageBuffer, BUFFER_SIZE+1);
 
-        read(clientObject->getConnectionDesc(), messageBuffer, BUFFER_SIZE);
-        char *clientId = new char[BUFFER_SIZE];
-        bzero(clientId,BUFFER_SIZE+1);
-        char* message = new char[BUFFER_SIZE];
+            bzero(messageBuffer, BUFFER_SIZE+1);
 
-        snprintf(message, BUFFER_SIZE-1, "%s: %s",clientObject->getName(), messageBuffer);
-        qDebug()<<message;
-        serverInstance->broadcastMessage(message, clientDesc);
+            read(clientObject->getConnectionDesc(), messageBuffer, BUFFER_SIZE);
+        if (strncmp(messageBuffer, "~options", BUFFER_SIZE) != 0){
+            char *clientId = new char[BUFFER_SIZE];
+            bzero(clientId,BUFFER_SIZE+1);
+            char* message = new char[BUFFER_SIZE];
 
-        delete[] clientId;
-        delete[] message;
-    }while(strncmp(messageBuffer, "quit_from_chat", BUFFER_SIZE) != 0);
+            snprintf(message, BUFFER_SIZE-1, "%s: %s",clientObject->getName(), messageBuffer);
+            qDebug()<<message;
+            serverInstance->broadcastMessage(message, clientDesc);
+
+            delete[] clientId;
+            delete[] message;
+
+        }
+        else{
+            serverInstance->handleOptionsInterface(clientObject);
+            continue;
+        }
+    }while(strncmp(messageBuffer, "~quit", BUFFER_SIZE) != 0);
 
 }
 
 void Server::broadcastMessage(const char* message, const int& clientDescriptor) const
 {
     for (uint i=0; i<Server::numberOfThreads; ++i){
-        if (this->clients[i]->getConnectionDesc() != clientDescriptor){
-            this->clients[i]->sendMessage(message);
+        if (this->clients[i].getConnectionDesc() != clientDescriptor){
+            this->clients[i].sendMessage(message);
         }
     }
+}
+
+void Server::handleOptionsInterface(const ClientObject* client) const
+{
+    static const char* optionsMessage = "Options:\n\n\t1.Change the nickname.\n";
+    client->sendMessage(optionsMessage);
+
+    char* messageBuffer = new char[BUFFER_SIZE];
+    bzero(messageBuffer, BUFFER_SIZE);
+
+    read(client->getConnectionDesc(), messageBuffer, BUFFER_SIZE);
+
+    //static void hanlingOptionsLambda = [](enum Options)
+
+    switch(atoi(messageBuffer)){
+    case 1:
+        client->sendMessage("\tPlease type the new nickname and press enter.\n");
+        //handleNickChanging();
+        break;
+    default:
+        client->sendMessage("\tGiven option not found.\n");
+        break;
+    }
+
+    delete[] messageBuffer;
+
 }
 

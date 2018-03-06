@@ -93,9 +93,12 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>bindSocket</b> ()</td
 <tr class="memitem:ab021d8bdec2e65ef97537b9542e946a2"><td class="memItemLeft" align="right" valign="top"><a id="ab021d8bdec2e65ef97537b9542e946a2"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>listenOnSocket</b> ()</td></tr>
 <tr class="separator:ab021d8bdec2e65ef97537b9542e946a2"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0ca5d8b118ec963af90ffce050988753"><td class="memItemLeft" align="right" valign="top"><a id="a0ca5d8b118ec963af90ffce050988753"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>broadcastMessage</b> (const char *message) const</td></tr>
-<tr class="separator:a0ca5d8b118ec963af90ffce050988753"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7153ea97c1112ae9dc61c65dc59c7f82"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../db/d00/classServer.html#a7153ea97c1112ae9dc61c65dc59c7f82">broadcastMessage</a> (const char *message, const int &amp;clientDescriptor) const</td></tr>
+<tr class="memdesc:a7153ea97c1112ae9dc61c65dc59c7f82"><td class="mdescLeft">&#160;</td><td class="mdescRight">broadcastMessage  <a href="#a7153ea97c1112ae9dc61c65dc59c7f82">More...</a><br /></td></tr>
+<tr class="separator:a7153ea97c1112ae9dc61c65dc59c7f82"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a24de25ecc28d8e0202a09c0ae5f7e98f"><td class="memItemLeft" align="right" valign="top"><a id="a24de25ecc28d8e0202a09c0ae5f7e98f"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>handleOptionsInterface</b> (const <a class="el" href="../../d7/d80/classClientObject.html">ClientObject</a> *client) const</td></tr>
+<tr class="separator:a24de25ecc28d8e0202a09c0ae5f7e98f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-static-methods"></a>
 Static Private Member Functions</h2></td></tr>
@@ -161,6 +164,52 @@ static uint&#160;</td><td class="memItemRight" valign="bottom"><b>numberOfThread
 </dl>
 <dl class="section return"><dt>Returns</dt><dd></dd></dl>
 <p>Standard action that new client thread executes. It creates new <a class="el" href="../../d7/d80/classClientObject.html" title="The ClientObject class. ">ClientObject</a> instance and sends initial message </p>
+
+</div>
+</div>
+<a id="a7153ea97c1112ae9dc61c65dc59c7f82"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7153ea97c1112ae9dc61c65dc59c7f82">&#9670;&nbsp;</a></span>broadcastMessage()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Server::broadcastMessage </td>
+          <td>(</td>
+          <td class="paramtype">const char *&#160;</td>
+          <td class="paramname"><em>message</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const int &amp;&#160;</td>
+          <td class="paramname"><em>clientDescriptor</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>broadcastMessage </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">message</td><td></td></tr>
+    <tr><td class="paramname">clientDescriptor</td><td>The descriptor of client who send the message</td></tr>
+  </table>
+  </dd>
+</dl>
+<p>Broadcasts message to all the clients without the one with given clientDescriptor </p>
 
 </div>
 </div>

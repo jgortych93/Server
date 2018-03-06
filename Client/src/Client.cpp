@@ -64,7 +64,7 @@ void Client::communicateWithServer()
 {
     char buffer[BUFFER_SIZE];
     bzero(buffer, BUFFER_SIZE+1);
-    qDebug("Type message to send please: \n");
+    qDebug("Type message and press 'Enter' please: \n");
 
     pthread_create(new pthread_t(), NULL, handleTextEntering, static_cast<void*>(&this->serverFileDescriptor));
 
