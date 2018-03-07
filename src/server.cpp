@@ -140,15 +140,17 @@ void* Server::action(void* args)
 
     do{
 
-            bzero(messageBuffer, BUFFER_SIZE+1);
+        bzero(messageBuffer, BUFFER_SIZE);
 
-            read(clientObject->getConnectionDesc(), messageBuffer, BUFFER_SIZE);
+        if (read(clientObject->getConnectionDesc(), messageBuffer, BUFFER_SIZE-1) == 0)
+            throw runtime_error(strerror(errno));
+
         if (strncmp(messageBuffer, "~options", BUFFER_SIZE) != 0){
             char *clientId = new char[BUFFER_SIZE];
-            bzero(clientId,BUFFER_SIZE+1);
+            bzero(clientId,BUFFER_SIZE);
             char* message = new char[BUFFER_SIZE];
 
-            snprintf(message, BUFFER_SIZE-1, "%s: %s",clientObject->getName(), messageBuffer);
+            snprintf(message, BUFFER_SIZE, "%s: %s",clientObject->getName(), messageBuffer);
             qDebug()<<message;
             serverInstance->broadcastMessage(message, clientDesc);
 
@@ -173,7 +175,7 @@ void Server::broadcastMessage(const char* message, const int& clientDescriptor) 
     }
 }
 
-void Server::handleOptionsInterface(const ClientObject* client) const
+void Server::handleOptionsInterface(ClientObject* client) const
 {
     static const char* optionsMessage = "Options:\n\n\t1.Change the nickname.\n";
     client->sendMessage(optionsMessage);
@@ -181,14 +183,31 @@ void Server::handleOptionsInterface(const ClientObject* client) const
     char* messageBuffer = new char[BUFFER_SIZE];
     bzero(messageBuffer, BUFFER_SIZE);
 
-    read(client->getConnectionDesc(), messageBuffer, BUFFER_SIZE);
+    if (read(client->getConnectionDesc(), messageBuffer, BUFFER_SIZE-1) == 0)
+        throw runtime_error(strerror(errno));
 
-    //static void hanlingOptionsLambda = [](enum Options)
+    char* oldName;
+    char* messageAboutChangingNick;
 
     switch(atoi(messageBuffer)){
     case 1:
         client->sendMessage("\tPlease type the new nickname and press enter.\n");
-        //handleNickChanging();
+        oldName = client->getName();
+        try {
+        this->handleNickChanging(client);
+        } catch (exception &e) {
+            qDebug()<<e.what();
+            client->sendMessage("Reading the name failed");
+        }
+
+        client->sendMessage("NAME CHANGED SUCCESSFULLY\n");
+
+        messageAboutChangingNick = new char[BUFFER_SIZE];
+        bzero(messageAboutChangingNick, BUFFER_SIZE);
+        snprintf(messageAboutChangingNick, BUFFER_SIZE, "%s changed name to : %s",oldName, client->getName());
+        this->broadcastMessage(messageAboutChangingNick, client->getConnectionDesc());
+        delete[] messageAboutChangingNick;
+
         break;
     default:
         client->sendMessage("\tGiven option not found.\n");
@@ -196,6 +215,20 @@ void Server::handleOptionsInterface(const ClientObject* client) const
     }
 
     delete[] messageBuffer;
+
+}
+
+void Server::handleNickChanging(ClientObject *client) const
+{
+    char* messageBuffer = new char[BUFFER_SIZE];
+    bzero(messageBuffer, BUFFER_SIZE);
+
+    if (read(client->getConnectionDesc(), messageBuffer, BUFFER_SIZE-1) == 0)
+            throw exception();
+
+    client->setName(messageBuffer);
+
+    delete [] messageBuffer;
 
 }
 

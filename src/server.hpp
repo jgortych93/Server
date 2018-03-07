@@ -47,7 +47,8 @@ class Server
      */
     void broadcastMessage(const char *message, const int &clientDescriptor) const;
 
-    void handleOptionsInterface(const ClientObject *client) const;
+    void handleOptionsInterface(ClientObject *client) const;
+    void handleNickChanging(ClientObject* client) const;
 public:
     Server(const int& portNumber);
     /**
