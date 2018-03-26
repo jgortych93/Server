@@ -15,6 +15,7 @@ class ClientObject
     int connectionDesc;                 /// Connection file descriptor
     uint userId;                        /// Client unique identifier
     char* name;                      /// Client name
+    uint8_t threadNumber;            /// Number of thread
 public:
     void setName(const char* name) {this->name = const_cast<char*>(name);}
     char* getName() const {return this->name;}
@@ -30,6 +31,8 @@ public:
     int getConnectionDesc() const {return this->connectionDesc;}
     void setClientAddress(const struct sockaddr_in& address){this->clientAddress = address;}
     ClientObject(){this->name = new char[NAME_SIZE+1]; }
+    uint8_t getThreadNumber() const;
+    void setThreadNumber(const uint8_t &value);
 };
 
 #endif //CLIENTOBJECT_H

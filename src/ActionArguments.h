@@ -13,9 +13,9 @@
 typedef struct ActionArguments
 {
     ClientObject client;
-    const Server* server;
+    Server* server;
 
-    ActionArguments(const ClientObject& clientObject, const Server* server):client(clientObject), server(server){}
+    ActionArguments(const ClientObject& clientObject, Server* server):client(clientObject), server(server){}
 
 }ActionArguments;
 

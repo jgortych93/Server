@@ -15,6 +15,7 @@ using namespace std;
 #define ACCEPT_ERROR "Cannot accept connection"
 #define BUFFER_SIZE 300
 #define NAME_BUFFER_SIZE 3
+#define CLIENTS_LIMIT_REACHED "CLients limit reached. Cannot insert new client"
 
 uint Server::numberOfThreads = 0;
 
@@ -22,6 +23,10 @@ uint Server::numberOfThreads = 0;
 Server::Server(const int& portNumber)
 {
     this->portNumber = portNumber;
+
+    this->clients = new ClientObject*[QUEUE_SIZE];
+    for (int i =0; i<QUEUE_SIZE; ++i)
+        this->clients[i] = nullptr;
 
     try{
         initializeNewSocket();
@@ -33,6 +38,15 @@ Server::Server(const int& portNumber)
     bzero(reinterpret_cast<char *> (&serverAddress), sizeof(serverAddress));
     fillServerAddressStruct();
 
+}
+
+Server::~Server()
+{
+    for (int i=0; i < QUEUE_SIZE; ++i){
+        delete this->clients[i];
+    }
+
+    delete [] this->clients;
 }
 
 void Server::initializeNewSocket()
@@ -101,11 +115,12 @@ void Server::runServer()
         newClientObject.setUserId(Server::numberOfThreads);
         newClientObject.setConnectionDesc(clientDescriptor);
         newClientObject.setClientAddress(tmpAddress);
-        this->clients[numberOfThreads-1] = newClientObject;
+        newClientObject.setThreadNumber(static_cast<uint8_t>(Server::numberOfThreads));
+        this->putClientAtFirstFreeArraySpace(&newClientObject);
 
         ActionArguments actionArguments(newClientObject, this);
 
-        pthread_create(&clientThreads[Server::numberOfThreads], NULL, action, static_cast<void*>(&actionArguments));
+        pthread_create(new pthread_t(), NULL, action, static_cast<void*>(&actionArguments));
     }
 
 }
@@ -120,7 +135,7 @@ void* Server::action(void* args)
     bzero(nameBuffer, NAME_BUFFER_SIZE+1);
 
     ClientObject* clientObject = &arguments.client;
-    const Server* serverInstance = arguments.server;
+    Server* serverInstance = arguments.server;
 
     // default name is thread number
     snprintf(nameBuffer, NAME_BUFFER_SIZE, "%d", Server::numberOfThreads);
@@ -164,13 +179,23 @@ void* Server::action(void* args)
         }
     }while(strncmp(messageBuffer, "~quit", BUFFER_SIZE) != 0);
 
+    char* leftMessage = new char[BUFFER_SIZE];
+    bzero(leftMessage, BUFFER_SIZE);
+    snprintf(leftMessage, BUFFER_SIZE, "%s left the chat!", clientObject->getName());
+    serverInstance->broadcastMessage(leftMessage, clientObject->getConnectionDesc());
+
+    serverInstance->eraseThreadOfNumber(clientObject->getThreadNumber());
+    --Server::numberOfThreads;
+
+    pthread_exit(NULL);
+
 }
 
 void Server::broadcastMessage(const char* message, const int& clientDescriptor) const
 {
     for (uint i=0; i<Server::numberOfThreads; ++i){
-        if (this->clients[i].getConnectionDesc() != clientDescriptor){
-            this->clients[i].sendMessage(message);
+        if (this->clients[i]->getConnectionDesc() != clientDescriptor){
+            this->clients[i]->sendMessage(message);
         }
     }
 }
@@ -231,4 +256,23 @@ void Server::handleNickChanging(ClientObject *client) const
     delete [] messageBuffer;
 
 }
+
+void Server::putClientAtFirstFreeArraySpace( ClientObject *client)
+{
+    for (int i=0; i < QUEUE_SIZE; ++i){
+        if (this->clients[i] == nullptr){
+            this->clients[i] = client;
+            return;
+        }
+
+    }
+
+    throw runtime_error(CLIENTS_LIMIT_REACHED);
+}
+
+void Server::eraseThreadOfNumber(const uint &threadNumber)
+{
+    delete this->clients[threadNumber];
+}
+
 

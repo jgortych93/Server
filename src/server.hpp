@@ -15,8 +15,7 @@ class Server
     int socketDescriptor;
     int portNumber;
     struct sockaddr_in serverAddress;
-    pthread_t clientThreads[QUEUE_SIZE];
-    ClientObject clients[QUEUE_SIZE];
+    ClientObject** clients;
     static uint numberOfThreads;
 
 
@@ -49,16 +48,18 @@ class Server
 
     void handleOptionsInterface(ClientObject *client) const;
     void handleNickChanging(ClientObject* client) const;
+
+    void putClientAtFirstFreeArraySpace(ClientObject *client);
 public:
     Server(const int& portNumber);
+    ~Server();
     /**
      * @brief runServer
      *
      * Method listens for new connections, accepts them and creates new thread for each new connection
      */
     void runServer();
-
-
+    void eraseThreadOfNumber(const uint& threadNumber);
 
 
 };

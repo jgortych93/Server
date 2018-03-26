@@ -8,6 +8,16 @@
 
 using namespace std;
 
+uint8_t ClientObject::getThreadNumber() const
+{
+    return threadNumber;
+}
+
+void ClientObject::setThreadNumber(const uint8_t &value)
+{
+    threadNumber = value;
+}
+
 void ClientObject::sendMessage(const char *message) const
 {
     const int sendingStatus =  static_cast<const int>(write(this->connectionDesc, message, strlen(message)));
