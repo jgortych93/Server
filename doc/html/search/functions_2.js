@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['fillserveraddressstruct',['fillServerAddressStruct',['../db/d00/classServer.html#a684bf0fce1ec62711a60d0cc3d25e8f8',1,'Server']]]
+  ['clientobject',['ClientObject',['../d7/d80/classClientObject.html#addc3741e6e2134ad75ef35cc50f46e25',1,'ClientObject']]]
 ];

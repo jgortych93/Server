@@ -78,6 +78,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a5dfdd750d32aa4adbb4fdd8ba29b1224"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../db/d00/classServer.html#a5dfdd750d32aa4adbb4fdd8ba29b1224">runServer</a> ()</td></tr>
 <tr class="memdesc:a5dfdd750d32aa4adbb4fdd8ba29b1224"><td class="mdescLeft">&#160;</td><td class="mdescRight">runServer  <a href="#a5dfdd750d32aa4adbb4fdd8ba29b1224">More...</a><br /></td></tr>
 <tr class="separator:a5dfdd750d32aa4adbb4fdd8ba29b1224"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a26aa498f27333fbb50bf9911df011f28"><td class="memItemLeft" align="right" valign="top"><a id="a26aa498f27333fbb50bf9911df011f28"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>eraseThreadOfNumber</b> (const uint &amp;threadNumber)</td></tr>
+<tr class="separator:a26aa498f27333fbb50bf9911df011f28"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-methods"></a>
 Private Member Functions</h2></td></tr>
@@ -96,9 +99,15 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>listenOnSocket</b> ()
 <tr class="memitem:a7153ea97c1112ae9dc61c65dc59c7f82"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../db/d00/classServer.html#a7153ea97c1112ae9dc61c65dc59c7f82">broadcastMessage</a> (const char *message, const int &amp;clientDescriptor) const</td></tr>
 <tr class="memdesc:a7153ea97c1112ae9dc61c65dc59c7f82"><td class="mdescLeft">&#160;</td><td class="mdescRight">broadcastMessage  <a href="#a7153ea97c1112ae9dc61c65dc59c7f82">More...</a><br /></td></tr>
 <tr class="separator:a7153ea97c1112ae9dc61c65dc59c7f82"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a24de25ecc28d8e0202a09c0ae5f7e98f"><td class="memItemLeft" align="right" valign="top"><a id="a24de25ecc28d8e0202a09c0ae5f7e98f"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>handleOptionsInterface</b> (const <a class="el" href="../../d7/d80/classClientObject.html">ClientObject</a> *client) const</td></tr>
-<tr class="separator:a24de25ecc28d8e0202a09c0ae5f7e98f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a33f3480d7e4f8f44cb857ad6eaf2e076"><td class="memItemLeft" align="right" valign="top"><a id="a33f3480d7e4f8f44cb857ad6eaf2e076"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>handleOptionsInterface</b> (<a class="el" href="../../d7/d80/classClientObject.html">ClientObject</a> *client) const</td></tr>
+<tr class="separator:a33f3480d7e4f8f44cb857ad6eaf2e076"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a84e4f16adced76015a29b34f42027d4f"><td class="memItemLeft" align="right" valign="top"><a id="a84e4f16adced76015a29b34f42027d4f"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>handleNickChanging</b> (<a class="el" href="../../d7/d80/classClientObject.html">ClientObject</a> *client) const</td></tr>
+<tr class="separator:a84e4f16adced76015a29b34f42027d4f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abcb6a001f76580524bdd3b96998e964c"><td class="memItemLeft" align="right" valign="top"><a id="abcb6a001f76580524bdd3b96998e964c"></a>
+int&#160;</td><td class="memItemRight" valign="bottom"><b>putClientAtFirstFreeArraySpace</b> (<a class="el" href="../../d7/d80/classClientObject.html">ClientObject</a> *client)</td></tr>
+<tr class="separator:abcb6a001f76580524bdd3b96998e964c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-static-methods"></a>
 Static Private Member Functions</h2></td></tr>
@@ -117,12 +126,9 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>portNumber</b></td></t
 <tr class="memitem:a0a84291035718de02da7e2c4e661f2a1"><td class="memItemLeft" align="right" valign="top"><a id="a0a84291035718de02da7e2c4e661f2a1"></a>
 struct sockaddr_in&#160;</td><td class="memItemRight" valign="bottom"><b>serverAddress</b></td></tr>
 <tr class="separator:a0a84291035718de02da7e2c4e661f2a1"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2659f052c537f44a27d2aef4ad079957"><td class="memItemLeft" align="right" valign="top"><a id="a2659f052c537f44a27d2aef4ad079957"></a>
-pthread_t&#160;</td><td class="memItemRight" valign="bottom"><b>clientThreads</b> [QUEUE_SIZE]</td></tr>
-<tr class="separator:a2659f052c537f44a27d2aef4ad079957"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2e06e7ad5573c0c5cf14f588e8377749"><td class="memItemLeft" align="right" valign="top"><a id="a2e06e7ad5573c0c5cf14f588e8377749"></a>
-<a class="el" href="../../d7/d80/classClientObject.html">ClientObject</a>&#160;</td><td class="memItemRight" valign="bottom"><b>clients</b> [QUEUE_SIZE]</td></tr>
-<tr class="separator:a2e06e7ad5573c0c5cf14f588e8377749"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa42c032945475fb74337637be7a5f928"><td class="memItemLeft" align="right" valign="top"><a id="aa42c032945475fb74337637be7a5f928"></a>
+<a class="el" href="../../d7/d80/classClientObject.html">ClientObject</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>clients</b> [QUEUE_SIZE]</td></tr>
+<tr class="separator:aa42c032945475fb74337637be7a5f928"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-static-attribs"></a>
 Static Private Attributes</h2></td></tr>

@@ -15,7 +15,7 @@ class Server
     int socketDescriptor;
     int portNumber;
     struct sockaddr_in serverAddress;
-    ClientObject** clients;
+    ClientObject* clients[QUEUE_SIZE];
     static uint numberOfThreads;
 
 
@@ -49,7 +49,7 @@ class Server
     void handleOptionsInterface(ClientObject *client) const;
     void handleNickChanging(ClientObject* client) const;
 
-    void putClientAtFirstFreeArraySpace(ClientObject *client);
+    int putClientAtFirstFreeArraySpace(ClientObject *client);
 public:
     Server(const int& portNumber);
     ~Server();

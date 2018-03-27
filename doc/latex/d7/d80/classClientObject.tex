@@ -12,9 +12,15 @@ The \hyperlink{classClientObject}{Client\+Object} class.
 \subsection*{Public Member Functions}
 \begin{DoxyCompactItemize}
 \item 
+\mbox{\Hypertarget{classClientObject_addc3741e6e2134ad75ef35cc50f46e25}\label{classClientObject_addc3741e6e2134ad75ef35cc50f46e25}} 
+\hyperlink{classClientObject_addc3741e6e2134ad75ef35cc50f46e25}{Client\+Object} ()
+\begin{DoxyCompactList}\small\item\em Number of thread. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classClientObject_a3fc12183abd09f9a49ac7221134cc3bf}\label{classClientObject_a3fc12183abd09f9a49ac7221134cc3bf}} 
+{\bfseries Client\+Object} (const int \&descriptor, const struct sockaddr\+\_\+in \&address)
+\item 
 \mbox{\Hypertarget{classClientObject_ab91f5a41ec123f2d312c7162eda4dff4}\label{classClientObject_ab91f5a41ec123f2d312c7162eda4dff4}} 
-void \hyperlink{classClientObject_ab91f5a41ec123f2d312c7162eda4dff4}{set\+Name} (const char $\ast$\hyperlink{classClientObject_a29fa4c21633a35a7321e255e7ac10dbc}{name})
-\begin{DoxyCompactList}\small\item\em Client name. \end{DoxyCompactList}\item 
+void {\bfseries set\+Name} (const char $\ast$\hyperlink{classClientObject_a29fa4c21633a35a7321e255e7ac10dbc}{name})
+\item 
 \mbox{\Hypertarget{classClientObject_a5c4daa9636097bf2905dc53ad08ca81c}\label{classClientObject_a5c4daa9636097bf2905dc53ad08ca81c}} 
 char $\ast$ {\bfseries get\+Name} () const
 \item 
@@ -31,6 +37,12 @@ int {\bfseries get\+Connection\+Desc} () const
 \item 
 \mbox{\Hypertarget{classClientObject_a49c720a1b38e12ebad46f2e9c9cde1b1}\label{classClientObject_a49c720a1b38e12ebad46f2e9c9cde1b1}} 
 void {\bfseries set\+Client\+Address} (const struct sockaddr\+\_\+in \&address)
+\item 
+\mbox{\Hypertarget{classClientObject_acad244c4aeef0346408bb6f5de2f0957}\label{classClientObject_acad244c4aeef0346408bb6f5de2f0957}} 
+uint8\+\_\+t {\bfseries get\+Thread\+Number} () const
+\item 
+\mbox{\Hypertarget{classClientObject_a336868963702390ecd9fe94f7a6fbdf8}\label{classClientObject_a336868963702390ecd9fe94f7a6fbdf8}} 
+void {\bfseries set\+Thread\+Number} (const uint8\+\_\+t \&value)
 \end{DoxyCompactItemize}
 \subsection*{Private Attributes}
 \begin{DoxyCompactItemize}
@@ -46,7 +58,10 @@ uint \hyperlink{classClientObject_ab4b229b46fe32b699598051074a4f71b}{user\+Id}
 \begin{DoxyCompactList}\small\item\em Connection file descriptor. \end{DoxyCompactList}\item 
 \mbox{\Hypertarget{classClientObject_a29fa4c21633a35a7321e255e7ac10dbc}\label{classClientObject_a29fa4c21633a35a7321e255e7ac10dbc}} 
 char $\ast$ \hyperlink{classClientObject_a29fa4c21633a35a7321e255e7ac10dbc}{name}
-\begin{DoxyCompactList}\small\item\em Client unique identifier. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\begin{DoxyCompactList}\small\item\em Client unique identifier. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classClientObject_af50b31f834bec1b4673161a1fe910e32}\label{classClientObject_af50b31f834bec1b4673161a1fe910e32}} 
+uint8\+\_\+t \hyperlink{classClientObject_af50b31f834bec1b4673161a1fe910e32}{thread\+Number}
+\begin{DoxyCompactList}\small\item\em Client name. \end{DoxyCompactList}\end{DoxyCompactItemize}
 
 
 \subsection{Detailed Description}

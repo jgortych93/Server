@@ -27,3 +27,11 @@ void ClientObject::sendMessage(const char *message) const
         throw runtime_error(SENDING_ERROR);
     }
 }
+
+ClientObject::ClientObject(const int &descriptor, const sockaddr_in &address)
+{
+    this->name = new char[NAME_SIZE+1];
+
+    this->connectionDesc = descriptor;
+    this->clientAddress = address;
+}

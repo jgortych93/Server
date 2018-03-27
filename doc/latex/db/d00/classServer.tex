@@ -7,7 +7,10 @@
 {\bfseries Server} (const int \&port\+Number)
 \item 
 void \hyperlink{classServer_a5dfdd750d32aa4adbb4fdd8ba29b1224}{run\+Server} ()
-\begin{DoxyCompactList}\small\item\em run\+Server \end{DoxyCompactList}\end{DoxyCompactItemize}
+\begin{DoxyCompactList}\small\item\em run\+Server \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classServer_a26aa498f27333fbb50bf9911df011f28}\label{classServer_a26aa498f27333fbb50bf9911df011f28}} 
+void {\bfseries erase\+Thread\+Of\+Number} (const uint \&thread\+Number)
+\end{DoxyCompactItemize}
 \subsection*{Private Member Functions}
 \begin{DoxyCompactItemize}
 \item 
@@ -24,8 +27,14 @@ void {\bfseries listen\+On\+Socket} ()
 \item 
 void \hyperlink{classServer_a7153ea97c1112ae9dc61c65dc59c7f82}{broadcast\+Message} (const char $\ast$message, const int \&client\+Descriptor) const
 \begin{DoxyCompactList}\small\item\em broadcast\+Message \end{DoxyCompactList}\item 
-\mbox{\Hypertarget{classServer_a24de25ecc28d8e0202a09c0ae5f7e98f}\label{classServer_a24de25ecc28d8e0202a09c0ae5f7e98f}} 
-void {\bfseries handle\+Options\+Interface} (const \hyperlink{classClientObject}{Client\+Object} $\ast$client) const
+\mbox{\Hypertarget{classServer_a33f3480d7e4f8f44cb857ad6eaf2e076}\label{classServer_a33f3480d7e4f8f44cb857ad6eaf2e076}} 
+void {\bfseries handle\+Options\+Interface} (\hyperlink{classClientObject}{Client\+Object} $\ast$client) const
+\item 
+\mbox{\Hypertarget{classServer_a84e4f16adced76015a29b34f42027d4f}\label{classServer_a84e4f16adced76015a29b34f42027d4f}} 
+void {\bfseries handle\+Nick\+Changing} (\hyperlink{classClientObject}{Client\+Object} $\ast$client) const
+\item 
+\mbox{\Hypertarget{classServer_abcb6a001f76580524bdd3b96998e964c}\label{classServer_abcb6a001f76580524bdd3b96998e964c}} 
+int {\bfseries put\+Client\+At\+First\+Free\+Array\+Space} (\hyperlink{classClientObject}{Client\+Object} $\ast$client)
 \end{DoxyCompactItemize}
 \subsection*{Static Private Member Functions}
 \begin{DoxyCompactItemize}
@@ -44,11 +53,8 @@ int {\bfseries port\+Number}
 \mbox{\Hypertarget{classServer_a0a84291035718de02da7e2c4e661f2a1}\label{classServer_a0a84291035718de02da7e2c4e661f2a1}} 
 struct sockaddr\+\_\+in {\bfseries server\+Address}
 \item 
-\mbox{\Hypertarget{classServer_a2659f052c537f44a27d2aef4ad079957}\label{classServer_a2659f052c537f44a27d2aef4ad079957}} 
-pthread\+\_\+t {\bfseries client\+Threads} \mbox{[}Q\+U\+E\+U\+E\+\_\+\+S\+I\+ZE\mbox{]}
-\item 
-\mbox{\Hypertarget{classServer_a2e06e7ad5573c0c5cf14f588e8377749}\label{classServer_a2e06e7ad5573c0c5cf14f588e8377749}} 
-\hyperlink{classClientObject}{Client\+Object} {\bfseries clients} \mbox{[}Q\+U\+E\+U\+E\+\_\+\+S\+I\+ZE\mbox{]}
+\mbox{\Hypertarget{classServer_aa42c032945475fb74337637be7a5f928}\label{classServer_aa42c032945475fb74337637be7a5f928}} 
+\hyperlink{classClientObject}{Client\+Object} $\ast$ {\bfseries clients} \mbox{[}Q\+U\+E\+U\+E\+\_\+\+S\+I\+ZE\mbox{]}
 \end{DoxyCompactItemize}
 \subsection*{Static Private Attributes}
 \begin{DoxyCompactItemize}

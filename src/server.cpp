@@ -16,6 +16,7 @@ using namespace std;
 #define BUFFER_SIZE 300
 #define NAME_BUFFER_SIZE 3
 #define CLIENTS_LIMIT_REACHED "CLients limit reached. Cannot insert new client"
+#define CLIENTS_THREAD_NOT_FOUND "Client of given thread number not found"
 
 uint Server::numberOfThreads = 0;
 
@@ -24,7 +25,6 @@ Server::Server(const int& portNumber)
 {
     this->portNumber = portNumber;
 
-    this->clients = new ClientObject*[QUEUE_SIZE];
     for (int i =0; i<QUEUE_SIZE; ++i)
         this->clients[i] = nullptr;
 
@@ -45,8 +45,6 @@ Server::~Server()
     for (int i=0; i < QUEUE_SIZE; ++i){
         delete this->clients[i];
     }
-
-    delete [] this->clients;
 }
 
 void Server::initializeNewSocket()
@@ -111,14 +109,9 @@ void Server::runServer()
         ++Server::numberOfThreads;
 
 
-        ClientObject newClientObject;
-        newClientObject.setUserId(Server::numberOfThreads);
-        newClientObject.setConnectionDesc(clientDescriptor);
-        newClientObject.setClientAddress(tmpAddress);
-        newClientObject.setThreadNumber(static_cast<uint8_t>(Server::numberOfThreads));
-        this->putClientAtFirstFreeArraySpace(&newClientObject);
+        const int clientIndex = this->putClientAtFirstFreeArraySpace(new ClientObject(clientDescriptor, tmpAddress));
 
-        ActionArguments actionArguments(newClientObject, this);
+        ActionArguments actionArguments(*(this->clients[clientIndex]), this);
 
         pthread_create(new pthread_t(), NULL, action, static_cast<void*>(&actionArguments));
     }
@@ -194,7 +187,7 @@ void* Server::action(void* args)
 void Server::broadcastMessage(const char* message, const int& clientDescriptor) const
 {
     for (uint i=0; i<Server::numberOfThreads; ++i){
-        if (this->clients[i]->getConnectionDesc() != clientDescriptor){
+        if (this->clients[i] != nullptr && this->clients[i]->getConnectionDesc() != clientDescriptor){
             this->clients[i]->sendMessage(message);
         }
     }
@@ -257,12 +250,13 @@ void Server::handleNickChanging(ClientObject *client) const
 
 }
 
-void Server::putClientAtFirstFreeArraySpace( ClientObject *client)
+int Server::putClientAtFirstFreeArraySpace( ClientObject *client)
 {
     for (int i=0; i < QUEUE_SIZE; ++i){
         if (this->clients[i] == nullptr){
             this->clients[i] = client;
-            return;
+            this->clients[i]->setThreadNumber(static_cast<uint8_t>(i));
+            return i;
         }
 
     }
@@ -272,7 +266,14 @@ void Server::putClientAtFirstFreeArraySpace( ClientObject *client)
 
 void Server::eraseThreadOfNumber(const uint &threadNumber)
 {
-    delete this->clients[threadNumber];
+    for (int i=0; i<QUEUE_SIZE; ++i){
+        if (this->clients[i]->getThreadNumber() == threadNumber){
+            this->clients[threadNumber] = nullptr;
+            return;
+        }
+    }
+
+    throw runtime_error(CLIENTS_THREAD_NOT_FOUND);
 }
 
 
