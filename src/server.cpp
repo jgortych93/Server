@@ -124,15 +124,9 @@ void* Server::action(void* args)
 
     char messageBuffer[BUFFER_SIZE];
     bzero(messageBuffer, BUFFER_SIZE+1);
-    char nameBuffer[NAME_BUFFER_SIZE];
-    bzero(nameBuffer, NAME_BUFFER_SIZE+1);
 
     ClientObject* clientObject = &arguments.client;
     Server* serverInstance = arguments.server;
-
-    // default name is thread number
-    snprintf(nameBuffer, NAME_BUFFER_SIZE, "%d", Server::numberOfThreads);
-    clientObject->setName(nameBuffer);
 
     const int clientDesc = clientObject->getConnectionDesc();
 
@@ -151,7 +145,7 @@ void* Server::action(void* args)
         bzero(messageBuffer, BUFFER_SIZE);
 
         if (read(clientObject->getConnectionDesc(), messageBuffer, BUFFER_SIZE-1) == 0)
-            throw runtime_error(strerror(errno));
+            break;
 
         if (strncmp(messageBuffer, "~options", BUFFER_SIZE) != 0){
             char *clientId = new char[BUFFER_SIZE];
@@ -172,10 +166,13 @@ void* Server::action(void* args)
         }
     }while(strncmp(messageBuffer, "~quit", BUFFER_SIZE) != 0);
 
+    bzero(messageBuffer, BUFFER_SIZE+1);
+
     char* leftMessage = new char[BUFFER_SIZE];
     bzero(leftMessage, BUFFER_SIZE);
-    snprintf(leftMessage, BUFFER_SIZE, "%s left the chat!", clientObject->getName());
+    snprintf(leftMessage, BUFFER_SIZE, " %s left the chat!", clientObject->getName());
     serverInstance->broadcastMessage(leftMessage, clientObject->getConnectionDesc());
+    delete[] leftMessage;
 
     serverInstance->eraseThreadOfNumber(clientObject->getThreadNumber());
     --Server::numberOfThreads;
@@ -246,16 +243,17 @@ void Server::handleNickChanging(ClientObject *client) const
 
     client->setName(messageBuffer);
 
-    delete [] messageBuffer;
-
 }
 
 int Server::putClientAtFirstFreeArraySpace( ClientObject *client)
 {
+
     for (int i=0; i < QUEUE_SIZE; ++i){
         if (this->clients[i] == nullptr){
             this->clients[i] = client;
             this->clients[i]->setThreadNumber(static_cast<uint8_t>(i));
+
+            snprintf(this->clients[i]->getName(), NAME_BUFFER_SIZE, "%d", i);
             return i;
         }
 
@@ -267,7 +265,9 @@ int Server::putClientAtFirstFreeArraySpace( ClientObject *client)
 void Server::eraseThreadOfNumber(const uint &threadNumber)
 {
     for (int i=0; i<QUEUE_SIZE; ++i){
-        if (this->clients[i]->getThreadNumber() == threadNumber){
+        if (this->clients[i] != nullptr && this->clients[i]->getThreadNumber() == threadNumber){
+            delete[] this->clients[i]->getName();
+            delete this->clients[i];
             this->clients[threadNumber] = nullptr;
             return;
         }
